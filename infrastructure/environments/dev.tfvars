@@ -15,7 +15,7 @@ environment = "dev"
 
 sql_config = {
   admin = {
-    login_username = "pins-odt-sql-dev-appeals-bo"
+    login_username = "pins-odt-sql-dev-template"
     object_id      = "1c3b7d11-36c4-41ca-90b5-d15eafbe3b61"
   }
   sku_name    = "Basic"

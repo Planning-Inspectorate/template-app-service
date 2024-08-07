@@ -3,14 +3,14 @@ resource "azurerm_cdn_frontdoor_profile" "web" {
   resource_group_name = azurerm_resource_group.primary.name
   sku_name            = "Premium_AzureFrontDoor"
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
@@ -88,7 +88,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   mode                              = "Prevention"
   custom_block_response_status_code = 403
 
-  tags = local.tags
+  tags = local.common_tags
 
   custom_rule {
     name                           = "RateLimitHttpRequest"

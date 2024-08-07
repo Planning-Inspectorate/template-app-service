@@ -66,10 +66,13 @@ variable "sql_config" {
 variable "tags" {
   description = "A collection of tags to assign to taggable resources"
   type        = map(string)
-  default     = {}
+  default     = {
+    Owner       = "DevOps"
+    Environment = string
+  }
 }
 
-variable "tooling_config" {
+variable "tooling_config" { # A completely different container registry?
   description = "Config for the tooling subscription resources"
   type = object({
     container_registry_name = string

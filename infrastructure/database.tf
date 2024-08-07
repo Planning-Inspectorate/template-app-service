@@ -20,7 +20,7 @@ resource "azurerm_mssql_server" "primary" {
     type = "SystemAssigned"
   }
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_private_endpoint" "sql_primary" {
@@ -41,7 +41,7 @@ resource "azurerm_private_endpoint" "sql_primary" {
     is_manual_connection           = false
   }
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_mssql_database" "primary" {
@@ -63,7 +63,7 @@ resource "azurerm_mssql_database" "primary" {
     week_of_year      = var.sql_config.retention.long_term_week_of_year
   }
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
@@ -82,7 +82,7 @@ resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
   )
   content_type = "connection-string"
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "azurerm_key_vault_secret" "sql_app_connection_string" {
@@ -101,7 +101,7 @@ resource "azurerm_key_vault_secret" "sql_app_connection_string" {
   )
   content_type = "connection-string"
 
-  tags = local.tags
+  tags = local.common_tags
 }
 
 resource "random_id" "sql_admin_username" {

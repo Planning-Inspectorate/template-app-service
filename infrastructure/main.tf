@@ -2,19 +2,19 @@ module "primary_region" {
   source  = "claranet/regions/azurerm"
   version = "7.1.1"
 
-  azure_region = local.primary_location
+  azure_region = locals.primary_location
 }
 
 resource "azurerm_resource_group" "primary" {
-  name     = "${local.org}-rg-${local.resource_suffix}"
+  name     = format("%s-rg-%s", locals.org, locals.resource_suffix)
   location = module.primary_region.location
 
-  tags = local.tags
+  tags = locals.tags
 }
 
 resource "azurerm_key_vault" "main" {
   #checkov:skip=CKV_AZURE_109: TODO: consider firewall settings, route traffic via VNet
-  name                        = "${local.org}-kv-${local.shorter_resource_suffix}"
+  name = format("%s-kv-%s", locals.org, locals.resource_suffix)
   location                    = module.primary_region.location
   resource_group_name         = azurerm_resource_group.primary.name
   enabled_for_disk_encryption = true
@@ -25,20 +25,20 @@ resource "azurerm_key_vault" "main" {
 
   sku_name = "standard"
 
-  tags = local.tags
+  tags = locals.tags
 }
 
 # secrets to be manually populated
 resource "azurerm_key_vault_secret" "manual_secrets" {
   #checkov:skip=CKV_AZURE_41: expiration not valid
-  for_each = toset(local.secrets)
+  for_each = toset(locals.secrets)
 
   key_vault_id = azurerm_key_vault.main.id
   name         = each.value
   value        = "<terraform_placeholder>"
   content_type = "plaintext"
 
-  tags = local.tags
+  tags = locals.tags
 
   lifecycle {
     ignore_changes = [

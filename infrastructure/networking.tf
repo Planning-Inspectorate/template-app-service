@@ -4,7 +4,7 @@ resource "azurerm_virtual_network" "main" {
   resource_group_name = azurerm_resource_group.primary.name
   address_space       = [var.vnet_config.address_space]
 
-  tags = var.tags
+  tags = locals.tags
 }
 
 resource "azurerm_subnet" "apps" {
@@ -33,32 +33,28 @@ resource "azurerm_subnet" "main" {
   address_prefixes     = [var.vnet_config.main_subnet_address_space]
 }
 
+resource "azurerm_subnet" "main" {
+  name                 = "${local.org}-snet-${local.resource_suffix}"
+  resource_group_name  = azurerm_resource_group.primary.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.vnet_config.main_subnet_address_space]
+}
+
 ## peer to tooling VNET for DevOps agents
-resource "azurerm_virtual_network_peering" "bo_to_tooling" {
+resource "azurerm_virtual_network_peering" "template_to_tooling" {
   name                      = "${local.org}-peer-${local.service_name}-to-tooling-${var.environment}"
   remote_virtual_network_id = data.azurerm_virtual_network.tooling.id
   resource_group_name       = azurerm_virtual_network.main.resource_group_name
   virtual_network_name      = azurerm_virtual_network.main.name
 }
 
-resource "azurerm_virtual_network_peering" "tooling_to_bo" {
+resource "azurerm_virtual_network_peering" "tooling_to_template" {
   name                      = "${local.org}-peer-tooling-to-${local.service_name}-${var.environment}"
   remote_virtual_network_id = azurerm_virtual_network.main.id
   resource_group_name       = var.tooling_config.network_rg
   virtual_network_name      = var.tooling_config.network_name
 
   provider = azurerm.tooling
-}
-
-## peer to Horizon for linked case integration
-resource "azurerm_virtual_network_peering" "bo_to_horizon" {
-  # only deploy if configured to connect to horizon
-  count = var.horizon_infra_config.deploy_connections ? 1 : 0
-
-  name                      = "${local.org}-peer-${local.service_name}-to-horizon-${var.environment}"
-  remote_virtual_network_id = data.azurerm_virtual_network.horizon_vnet[0].id
-  resource_group_name       = azurerm_virtual_network.main.resource_group_name
-  virtual_network_name      = azurerm_virtual_network.main.name
 }
 
 ## DNS Zones for Azure Services

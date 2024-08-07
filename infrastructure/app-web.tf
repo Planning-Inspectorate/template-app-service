@@ -1,4 +1,4 @@
-module "app_web" {
+module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
   source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=1.24"
 
