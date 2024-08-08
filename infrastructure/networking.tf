@@ -51,15 +51,15 @@ resource "azurerm_virtual_network_peering" "tooling_to_bo" {
 }
 
 ## peer to Horizon for linked case integration
-resource "azurerm_virtual_network_peering" "bo_to_horizon" {
-  # only deploy if configured to connect to horizon
-  count = var.horizon_infra_config.deploy_connections ? 1 : 0
+# resource "azurerm_virtual_network_peering" "bo_to_horizon" {
+#   # only deploy if configured to connect to horizon
+#   count = var.horizon_infra_config.deploy_connections ? 1 : 0
 
-  name                      = "${local.org}-peer-${local.service_name}-to-horizon-${var.environment}"
-  remote_virtual_network_id = data.azurerm_virtual_network.horizon_vnet[0].id
-  resource_group_name       = azurerm_virtual_network.main.resource_group_name
-  virtual_network_name      = azurerm_virtual_network.main.name
-}
+#   name                      = "${local.org}-peer-${local.service_name}-to-horizon-${var.environment}"
+#   remote_virtual_network_id = data.azurerm_virtual_network.horizon_vnet[0].id
+#   resource_group_name       = azurerm_virtual_network.main.resource_group_name
+#   virtual_network_name      = azurerm_virtual_network.main.name
+# }
 
 ## DNS Zones for Azure Services
 ## Private DNS Zones exist in the tooling subscription and are shared
