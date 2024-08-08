@@ -73,7 +73,7 @@ data "azurerm_private_dns_zone" "app_config" {
 }
 resource "azurerm_private_dns_zone_virtual_network_link" "app_config" {
   name                  = "${local.org}-vnetlink-app-config-${local.resource_suffix}"
-  resource_group_name   = var.tooling_config.network_rg
+  resource_group_name   = var.tooling_config.network_rg      #values are in terraform.tfvars file
   private_dns_zone_name = data.azurerm_private_dns_zone.app_config.name
   virtual_network_id    = azurerm_virtual_network.main.id
 
