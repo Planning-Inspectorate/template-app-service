@@ -6,8 +6,8 @@ module "primary_region" {
 }
 
 resource "azurerm_resource_group" "primary" {
-  name     = "${local.org}-rg-${local.resource_suffix}"
-  location = module.primary_region.location
+  name     = "${local.org}-rg-${local.resource_suffix}" #pins-rg-template-dev
+  location = module.primary_region.location             #uk-south
 
   tags = local.tags
 }

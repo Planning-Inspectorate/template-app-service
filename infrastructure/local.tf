@@ -4,8 +4,8 @@ locals {
   primary_location   = "uk-south"
   secondary_location = "uk-west"
 
-  resource_suffix           = "${local.service_name}-${var.environment}"
-  secondary_resource_suffix = "${local.service_name}-secondary-${var.environment}"
+  resource_suffix = "${local.service_name}-${var.environment}" #template-dev
+  # secondary_resource_suffix = "${local.service_name}-secondary-${var.environment}"
   # if equals "training" will shorten to "train" so storage account name length is upto 24 chars
   environment = var.environment == "training" ? "train" : var.environment
   # keep the suffix short for training env, as it can only be upto 24 characters total for azurerm_storage_account

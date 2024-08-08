@@ -1,7 +1,7 @@
 resource "azurerm_log_analytics_workspace" "main" {
-  name                = "${local.org}-log-${local.resource_suffix}"
-  location            = module.primary_region.location
-  resource_group_name = azurerm_resource_group.primary.name
+  name                = "${local.org}-log-${local.resource_suffix}" #pins-log-template-dev
+  location            = module.primary_region.location              #uk-south
+  resource_group_name = azurerm_resource_group.primary.name         #pins-rg-template-dev
   sku                 = "PerGB2018"
   retention_in_days   = 30
 

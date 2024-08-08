@@ -1,7 +1,7 @@
 resource "azurerm_cdn_frontdoor_profile" "web" {
   name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   resource_group_name = azurerm_resource_group.primary.name
-  sku_name            = "Premium_AzureFrontDoor"
+  sku_name            = "Standard_AzureFrontDoor"
 
   tags = local.tags
 }
@@ -48,7 +48,7 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}" #pins-fd-template-web-dev
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
   host_name                = var.web_app_domain
 
@@ -59,7 +59,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "web" {
 }
 
 resource "azurerm_cdn_frontdoor_route" "web" {
-  name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}" #pins-fd-template-web-dev
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.web.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.web.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.web.id]
@@ -74,16 +74,18 @@ resource "azurerm_cdn_frontdoor_route" "web" {
   link_to_default_domain          = false
 }
 
+
+#assocaition between custom domain and one or more route
 resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
-  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id] #can be one or more
 }
 
 # WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
-  name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
-  resource_group_name               = azurerm_resource_group.primary.name
-  sku_name                          = "Premium_AzureFrontDoor"
+  name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "") #pins-waf-template-web-dev
+  resource_group_name               = azurerm_resource_group.primary.name                                               #pins-rg-template-dev
+  sku_name                          = azurerm_cdn_frontdoor_profile.web.sku_name                                        #"Standard_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403

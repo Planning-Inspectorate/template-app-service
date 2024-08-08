@@ -2,17 +2,17 @@ resource "azurerm_mssql_server" "primary" {
   #checkov:skip=CKV_AZURE_113: Public access enabled for testing
   #checkov:skip=CKV_AZURE_23: Auditing to be added later
   #checkov:skip=CKV_AZURE_24: Auditing to be added later
-  name                          = "${local.org}-sql-${local.service_name}-primary-${var.environment}"
-  resource_group_name           = azurerm_resource_group.primary.name
-  location                      = module.primary_region.location
+  name                          = "${local.org}-sql-${local.service_name}-primary-${var.environment}" #pins-sql-template-primary-dev
+  resource_group_name           = azurerm_resource_group.primary.name                                 #pins-rg-template-dev
+  location                      = module.primary_region.location                                      #uk-south
   version                       = "12.0"
-  administrator_login           = random_id.sql_admin_username.b64_url
+  administrator_login           = random_id.sql_admin_username.b64_url #random_id is a resource
   administrator_login_password  = random_password.sql_admin_password.result
   minimum_tls_version           = "1.2"
   public_network_access_enabled = var.sql_config.public_network_access_enabled
 
   azuread_administrator {
-    login_username = var.sql_config.admin.login_username
+    login_username = var.sql_config.admin.login_username #gets value from tfvars file->local.tf file
     object_id      = var.sql_config.admin.object_id
   }
 
@@ -24,9 +24,9 @@ resource "azurerm_mssql_server" "primary" {
 }
 
 resource "azurerm_private_endpoint" "sql_primary" {
-  name                = "${local.org}-pe-${local.service_name}-sql-${var.environment}"
-  resource_group_name = azurerm_resource_group.primary.name
-  location            = module.primary_region.location
+  name                = "${local.org}-pe-${local.service_name}-sql-${var.environment}" #pins-pe-template-sql-dev
+  resource_group_name = azurerm_resource_group.primary.name                            #[ins-rg-template-dev]
+  location            = module.primary_region.location                                 #uk-south
   subnet_id           = azurerm_subnet.main.id
 
   private_dns_zone_group {
@@ -46,7 +46,7 @@ resource "azurerm_private_endpoint" "sql_primary" {
 
 resource "azurerm_mssql_database" "primary" {
   #checkov:skip=CKV_AZURE_224: TODO: Ensure that the Ledger feature is enabled on database that requires cryptographic proof and nonrepudiation of data integrity
-  name        = "${local.org}-sqldb-${local.resource_suffix}"
+  name        = "${local.org}-sqldb-${local.resource_suffix}" #pins-saldb-tremplate-dev
   server_id   = azurerm_mssql_server.primary.id
   collation   = "SQL_Latin1_General_CP1_CI_AS"
   sku_name    = var.sql_config.sku_name
@@ -69,7 +69,7 @@ resource "azurerm_mssql_database" "primary" {
 resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
   #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
   key_vault_id = azurerm_key_vault.main.id
-  name         = "${local.service_name}-sql-admin-connection-string"
+  name         = "${local.service_name}-sql-admin-connection-string" #template-sql-admin-connection-string
   value = join(
     ";",
     [
@@ -87,8 +87,8 @@ resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
 
 resource "azurerm_key_vault_secret" "sql_app_connection_string" {
   #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
-  key_vault_id = azurerm_key_vault.main.id
-  name         = "${local.service_name}-sql-app-connection-string"
+  key_vault_id = azurerm_key_vault.main.id                         #resource is defined in main.tf file
+  name         = "${local.service_name}-sql-app-connection-string" #template-sql-admin-connection-string
   value = join(
     ";",
     [
