@@ -1,4 +1,0 @@
-variables:
-  azurecrName: pinscrsharedtoolinguks
-  resourceGroup: pins-rg-template-$(ENVIRONMENT)
-  tagPrefix: template
