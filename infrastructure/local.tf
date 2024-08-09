@@ -1,7 +1,7 @@
 locals {
-  org                = "pins"
-  service_name       = "template"
-  primary_location   = "uk-south"
+  org              = "pins"
+  service_name     = "template"
+  primary_location = "uk-south"
   # secondary_location = "uk-west"
 
   resource_suffix = "${local.service_name}-${var.environment}" #template-dev
