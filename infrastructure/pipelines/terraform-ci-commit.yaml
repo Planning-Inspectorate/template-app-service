@@ -12,7 +12,6 @@ pr:
   paths:
     include:
       - infrastructure
-      - .azure/pipelines
 
 resources:
   repositories:
@@ -33,9 +32,9 @@ extends:
         steps:
           - template: ../steps/node_script.yml
             parameters:
-              nodeVersion: 20
+              nodeVersion: 18
               script: npm ci
           - template: ../steps/node_script.yml
             parameters:
-              nodeVersion: 20
+              nodeVersion: 18
               script: npm run commitlint
