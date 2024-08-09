@@ -4,7 +4,7 @@ config {
 
 plugin "azurerm" {
   enabled = true
-  version = "0.25.1"
+  version = "0.26.0"
   source  = "github.com/terraform-linters/tflint-ruleset-azurerm"
 }
 
@@ -18,6 +18,14 @@ rule "terraform_documented_outputs" {
 
 rule "terraform_documented_variables" {
   enabled = true
+}
+
+rule "terraform_required_providers" {
+  enabled = false
+}
+
+rule "terraform_required_version" {
+  enabled = false
 }
 
 rule "terraform_naming_convention" {
