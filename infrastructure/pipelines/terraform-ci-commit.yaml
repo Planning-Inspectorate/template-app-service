@@ -26,7 +26,7 @@ extends:
   parameters:
     gitFetchDepth: 0
     globalVariables:
-      - template: .azure/pipelines/azure-pipelines-variables.yml
+      - template: azure-pipelines-variables.yml
     validationJobs:
       - name: Check Commits
         steps:
