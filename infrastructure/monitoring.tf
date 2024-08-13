@@ -5,7 +5,7 @@
 #   sku                 = "PerGB2018"
 #   retention_in_days   = 30
 
-#   tags = local.common_tags
+#   tags = local.tags
 # }
 
 # resource "azurerm_application_insights" "main" {
@@ -16,7 +16,7 @@
 #   application_type     = "web" # should this be Node.JS, or general?
 #   daily_data_cap_in_gb = 10
 
-#   tags = local.common_tags
+#   tags = local.tags
 # }
 
 # resource "azurerm_key_vault_secret" "app_insights_connection_string" {
@@ -26,5 +26,5 @@
 #   value        = azurerm_application_insights.main.connection_string
 #   content_type = "connection-string"
 
-#   tags = local.common_tags
+#   tags = local.tags
 # }

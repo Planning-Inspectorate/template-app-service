@@ -7,5 +7,5 @@
 #   admin_enabled       = true
 #   sku                 = "Basic"
 
-#   tags = local.common_tags
+#   tags = local.tags
 # }
