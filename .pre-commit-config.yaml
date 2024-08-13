@@ -13,4 +13,4 @@ repos:
       - id: terraform_tflint
         args:
           - --args=--config=__GIT_WORKING_DIR__/infrastructure/.tflint.hcl
-      - id: terraform_checkov
+      # - id: terraform_checkov

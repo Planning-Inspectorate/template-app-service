@@ -1,10 +1,11 @@
 FROM node:18-alpine
 WORKDIR /src/app
+# ADD ./* ./
 COPY package*.json ./
+COPY app/src app/src
 
-# COPY packages ./packages
+COPY app/src app/src
 
-# COPY appeals/api appeals/api
 ENV NODE_ENV=dev
 RUN npm ci
 
@@ -12,8 +13,9 @@ RUN npm ci
 ENV SWAGGER_JSON_DIR=./src/server/openapi.json
 ENV DATABASE_URL=$DATABASE_URL
 
-WORKDIR /src/app/
-RUN npx prisma generate
+WORKDIR /src/app
+RUN npx prisma generate --schema='./src/database/schema.prisma'
+
 
 EXPOSE 3000
 
