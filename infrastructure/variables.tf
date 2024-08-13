@@ -91,7 +91,7 @@ variable "tooling_config" { # A completely different container registry?
 variable "vnet_config" {
   description = "VNet configuration"
   type = object({
-    address_space             = string
+    address_space = string
     # apps_subnet_address_space = string
     main_subnet_address_space = string
   })
