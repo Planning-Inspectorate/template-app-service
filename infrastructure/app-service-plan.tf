@@ -8,5 +8,5 @@
 #   os_type  = "Linux"
 #   sku_name = var.apps_config.app_service_plan_sku
 
-#   tags = local.common_tags
+#   tags = local.tags
 # }
