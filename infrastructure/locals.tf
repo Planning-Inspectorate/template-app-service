@@ -5,13 +5,16 @@ locals {
 
   resource_suffix = "${local.service_name}-${var.environment}"
 
-  tags = {
-    CreatedBy   = "Terraform"
-    Environment = var.environment
-    location    = local.primary_location
-    Owner       = "DevOps"
-    ServiceName = local.service_name
-  }
+  tags = merge(
+    var.tags,
+    {
+      CreatedBy   = "Terraform"
+      Environment = var.environment
+      location    = local.primary_location
+      Owner       = "DevOps"
+      ServiceName = local.service_name
+    }
+  )
 
   # secrets = []
 
