@@ -13,7 +13,7 @@ const govUkRoot = path.resolve(require.resolve('govuk-frontend'), '../../../..')
 
 /**
  * Compile sass into a css file in the .static folder
- * 
+ *
  * @see https://sass-lang.com/documentation/js-api/#md:usage
  * @returns {Promise<void>}
  */
@@ -36,7 +36,7 @@ async function compileSass() {
 
 /**
  * Copy govuk assets into the .static folder
- * 
+ *
  * @see https://frontend.design-system.service.gov.uk/importing-css-assets-and-javascript/#copy-the-font-and-image-files-into-your-application
  * @returns {Promise<void>}
  */

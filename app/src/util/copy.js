@@ -4,9 +4,9 @@ import path from 'node:path';
 
 /**
  * Copy a folder to a new location, and create that new directory if it doesn't exist
- * 
- * @param {string} from 
- * @param {string} to 
+ *
+ * @param {string} from
+ * @param {string} to
  * @returns {Promise<void>}
  */
 export async function copyFolder(from, to) {
@@ -25,9 +25,9 @@ export async function copyFolder(from, to) {
 
 /**
  * Copy a file or folder, rescursively
- * 
- * @param {string} from 
- * @param {string} to 
+ *
+ * @param {string} from
+ * @param {string} to
  * @returns {Promise<void>}
  */
 async function copyFileOrFolder(from, to) {

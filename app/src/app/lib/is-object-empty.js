@@ -1,6 +1,6 @@
 /**
- * 
- * @param { * } obj 
+ *
+ * @param { * } obj
  * @returns { boolean }
  */
 
