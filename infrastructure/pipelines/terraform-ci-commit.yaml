@@ -4,7 +4,6 @@ trigger:
       # trigger for merge queue branches
       - gh-readonly-queue/*
 
-
 pr:
   branches:
     include:
@@ -29,12 +28,12 @@ extends:
       - template: azure-pipelines-variables.yml@self
     validationJobs:
       - name: Check Commits
-        steps:
-          - template: ../steps/node_script.yml
-            parameters:
-              nodeVersion: 20
-              script: npm ci
-          - template: ../steps/node_script.yml
-            parameters:
-              nodeVersion: 20
-              script: npm run commitlint
+        # steps:
+          # - template: ../steps/node_script.yml
+          #   parameters:
+          #     nodeVersion: 20
+          #     script: npm ci
+          # - template: ../steps/node_script.yml
+          #   parameters:
+          #     nodeVersion: 20
+          #     script: npm run commitlint

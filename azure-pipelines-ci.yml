@@ -35,5 +35,5 @@ extends:
               script: npm ci
           - template: ../steps/node_script.yml
             parameters:
-              script: npm run test
               nodeVersion: 20
+              script: npm run test
