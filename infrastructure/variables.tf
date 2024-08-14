@@ -69,15 +69,15 @@ variable "tags" {
   default     = {}
 }
 
-variable "tag_owner_michael" {
-  description = "Who created the resource and pushes into it"
-  type        = map(string)
-  default = {
-    Owner = "Michael"
-  }
-}
+# variable "tag_owner_michael" {
+#   description = "Who created the resource and pushes into it"
+#   type        = map(string)
+#   default = {
+#     Owner = "Michael"
+#   }
+# }
 
-variable "tooling_config" { # A completely different container registry?
+variable "tooling_config" {
   description = "Config for the tooling subscription resources"
   type = object({
     container_registry_name = string
