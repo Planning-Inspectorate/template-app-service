@@ -7,6 +7,31 @@ resource "azurerm_virtual_network" "main" {
   tags = local.tags
 }
 
+resource "azurerm_subnet" "main" {
+  name                 = "${local.org}-snet-${local.resource_suffix}"
+  resource_group_name  = azurerm_resource_group.primary.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.vnet_config.main_subnet_address_space]
+}
+
+
+## peer to tooling VNET for DevOps agents
+resource "azurerm_virtual_network_peering" "template_to_tooling" {
+  name                      = "${local.org}-peer-${local.service_name}-to-tooling-${var.environment}"
+  remote_virtual_network_id = data.azurerm_virtual_network.tooling.id
+  resource_group_name       = azurerm_virtual_network.main.resource_group_name
+  virtual_network_name      = azurerm_virtual_network.main.name
+}
+
+resource "azurerm_virtual_network_peering" "tooling_to_template" {
+  name                      = "${local.org}-peer-tooling-to-${local.service_name}-${var.environment}"
+  remote_virtual_network_id = azurerm_virtual_network.main.id
+  resource_group_name       = var.tooling_config.network_rg
+  virtual_network_name      = var.tooling_config.network_name
+
+  provider = azurerm.tooling
+}
+
 # resource "azurerm_subnet" "apps" {
 #   name                 = "${local.org}-snet-${local.service_name}-apps-${var.environment}"
 #   resource_group_name  = azurerm_resource_group.primary.name
@@ -25,30 +50,6 @@ resource "azurerm_virtual_network" "main" {
 #     }
 #   }
 # }
-
-resource "azurerm_subnet" "main" {
-  name                 = "${local.org}-snet-${local.resource_suffix}"
-  resource_group_name  = azurerm_resource_group.primary.name
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = [var.vnet_config.main_subnet_address_space]
-}
-
-## peer to tooling VNET for DevOps agents
-resource "azurerm_virtual_network_peering" "template_to_tooling" {
-  name                      = "${local.org}-peer-${local.service_name}-to-tooling-${var.environment}"
-  remote_virtual_network_id = data.azurerm_virtual_network.tooling.id
-  resource_group_name       = azurerm_virtual_network.main.resource_group_name
-  virtual_network_name      = azurerm_virtual_network.main.name
-}
-
-resource "azurerm_virtual_network_peering" "tooling_to_template" {
-  name                      = "${local.org}-peer-tooling-to-${local.service_name}-${var.environment}"
-  remote_virtual_network_id = azurerm_virtual_network.main.id
-  resource_group_name       = var.tooling_config.network_rg
-  virtual_network_name      = var.tooling_config.network_name
-
-  provider = azurerm.tooling
-}
 
 ## DNS Zones for Azure Services
 ## Private DNS Zones exist in the tooling subscription and are shared

@@ -32,8 +32,8 @@ environment = "dev"
 # }
 
 vnet_config = {
-  address_space             = "10.17.0.0/22"
-  main_subnet_address_space = "10.17.0.0/24"
+  address_space             = "10.18.0.0/22"
+  main_subnet_address_space = "10.18.0.0/24"
   # apps_subnet_address_space = "10.16.0.0/24"
 }
 
