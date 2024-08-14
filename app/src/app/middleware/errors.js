@@ -17,7 +17,7 @@ export function defaultErrorHandler(error, req, res, next) {
 
     const code = error.statusCode || 500;
     res.status(code);
-    res.render(`layouts/error`, { 
+    res.render(`layouts/error`, {
         pageTitle: 'Sorry, there was an error',
         messages: [
             message,

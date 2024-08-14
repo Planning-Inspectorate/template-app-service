@@ -85,12 +85,12 @@ resource "azurerm_virtual_network_peering" "tooling_to_template" {
 #   provider = azurerm.tooling
 # }
 
-# data "azurerm_private_dns_zone" "database" {
-#   name                = "privatelink.database.windows.net"
-#   resource_group_name = var.tooling_config.network_rg
+data "azurerm_private_dns_zone" "database" {
+  name                = "privatelink.database.windows.net"
+  resource_group_name = var.tooling_config.network_rg
 
-#   provider = azurerm.tooling
-# }
+  provider = azurerm.tooling
+}
 # resource "azurerm_private_dns_zone_virtual_network_link" "database" {
 #   name                  = "${local.org}-vnetlink-db-${local.resource_suffix}"
 #   resource_group_name   = var.tooling_config.network_rg
