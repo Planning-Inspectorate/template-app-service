@@ -1,13 +1,13 @@
-# apps_config = {
-#   app_service_plan_sku     = "B1"
-#   node_environment         = "development"
-#   private_endpoint_enabled = false
+apps_config = {
+  app_service_plan_sku     = "B1"
+  node_environment         = "development"
+  private_endpoint_enabled = false
 
-#   logging = {
-#     level_file   = "silent"
-#     level_stdout = "info"
-#   }
-# }
+  logging = {
+    level_file   = "silent"
+    level_stdout = "info"
+  }
+}
 
 # alerts_enabled = false
 
