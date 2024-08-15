@@ -6,19 +6,19 @@
 #   default     = true
 # }
 
-# variable "apps_config" {
-#   description = "Config for the apps"
-#   type = object({
-#     app_service_plan_sku     = string
-#     node_environment         = string
-#     private_endpoint_enabled = bool
+variable "apps_config" {
+  description = "Config for the apps"
+  type = object({
+    app_service_plan_sku     = string
+    node_environment         = string
+    private_endpoint_enabled = bool
 
-#     logging = object({
-#       level_file   = string
-#       level_stdout = string
-#     })
-#   })
-# }
+    logging = object({
+      level_file   = string
+      level_stdout = string
+    })
+  })
+}
 
 # variable "common_config" {
 #   description = "Config for the common resources, such as action groups"
