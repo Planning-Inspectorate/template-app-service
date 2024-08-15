@@ -28,7 +28,7 @@ resource "azurerm_key_vault" "main" {
   tags = local.tags
 }
 
-# # secrets to be manually populated
+## # secrets to be manually populated
 # resource "azurerm_key_vault_secret" "manual_secrets" {
 #   #checkov:skip=CKV_AZURE_41: expiration not valid
 #   for_each = toset(local.secrets)
