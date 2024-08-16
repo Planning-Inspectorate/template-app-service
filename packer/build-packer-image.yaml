@@ -34,7 +34,7 @@ jobs:
           PKR_VAR_subscription_id: $(ODT_DEV_SUBSCRIPTION_ID)
           PKR_VAR_tenant_id: $(AZURE_TENANT_ID)
           PKR_VAR_template_resource_group_name: $(templateResourceGroupName)
-        workingDirectory: $(Build.Repository.LocalPath)/packer/azure-agents
+        workingDirectory: $(Build.Repository.LocalPath)/packer
     variables:
       templateResourceGroupName: pins-rg-template-dev
     workspace:

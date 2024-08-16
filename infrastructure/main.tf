@@ -28,6 +28,33 @@ resource "azurerm_key_vault" "main" {
   tags = local.tags
 }
 
+resource "azurerm_key_vault_access_policy" "admins" {
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = "1f09c724-3d26-4a14-b52b-5af4acafab55" # Entra Group "All DevOps"
+
+  certificate_permissions = ["Create", "Get", "Import", "List"]
+  key_permissions         = ["Create", "Get", "List"]
+  secret_permissions      = ["Get", "List", "Set"]
+  storage_permissions     = ["Get", "List", "Set"]
+}
+
+resource "random_password" "packer_admin_password" {
+  length  = 20
+  special = true
+}
+
+resource "azurerm_key_vault_secret" "agents_admin_password" {
+  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
+  name            = "packer-admin-password"
+  value           = random_password.packer_admin_password.result
+  key_vault_id    = azurerm_key_vault.main.id
+  expiration_date = "2025-01-01T00:00:00Z"
+  content_type    = "text/plain"
+
+  tags = local.tags
+}
+
 ## # secrets to be manually populated
 # resource "azurerm_key_vault_secret" "manual_secrets" {
 #   #checkov:skip=CKV_AZURE_41: expiration not valid

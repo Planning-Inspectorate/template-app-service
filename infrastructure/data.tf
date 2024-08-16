@@ -8,3 +8,9 @@ data "azurerm_virtual_network" "tooling" {
 
   provider = azurerm.tooling
 }
+
+data "azurerm_image" "packer_images" {
+  name_regex          = "packer_images"
+  sort_descending     = true
+  resource_group_name = azurerm_resource_group.primary.name
+}
