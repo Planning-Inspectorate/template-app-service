@@ -72,6 +72,8 @@ git clone --depth 1 --branch $TFENV_VERSION https://github.com/tfutils/tfenv.git
 export PATH="$PATH:$TFENV_DIR/bin"
 ## make tfenv bin available from /usr/local/bin for agents
 sudo ln -s $TFENV_DIR/* /usr/local/bin
+echo 'export PATH="$PATH:/usr/local/tfenv/bin"' >> ~/.bashrc
+source ~/.bashrc
 
 # Terraform
 for version in "${TERRAFORM_VERSIONS[@]}"; do
@@ -127,3 +129,25 @@ sudo apt-get install -y aspnetcore-runtime-6.0
 # Clean up
 echo "Cleaning up..."
 sudo /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
+
+$RemovedCount = 0
+$Images | Where-Object {
+  $DateString = ($_.Name).Split('-')[2..4] -join '-'
+  $ImageDate = [DateTime]::ParseExact($DateString, 'dd-MMMM-yyyy-hhmmt', $null)
+  $_.Name -ne $ImageName -and $ImageDate -le $StartTime.AddHours(-$ExpireHours)
+} | ForEach-Object {
+  Try {
+    If ($WhatIf) {
+      Write-Host "[$ScriptName] [WhatIf] Would have removed image: $($_.Name)"
+      $RemovedCount++
+    } Else {
+      Write-Host "[$ScriptName] Removing image: $($_.Name)`n"
+      Remove-AzImage -ResourceGroupName $ResourceGroupName -ImageName $_.Name -Force -ErrorAction Stop
+      Write-Host "[$ScriptName] Successfully removed image: $($_.Name)"
+      $RemovedCount++
+    }
+  } Catch {
+    Write-Host "[$ScriptName] Failed to remove image: $($_.Name)"
+    Write-Host "##vso[task.LogIssue type=warning;]$($_.Exception.Message)"
+  }
+}
