@@ -8,13 +8,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
   resource_group_name = azurerm_resource_group.primary.name
   location            = azurerm_resource_group.primary.location
   sku                 = "Standard_DS2_v2"
-  instances           = 2
+  instances           = 1
 
   overprovision          = false
   single_placement_group = false
 
   admin_username                  = "adminuser"
-  admin_password                  = azurerm_key_vault_secret.agents_admin_password.value ## This needs doing
+  admin_password                  = azurerm_key_vault_secret.agents_admin_password.value
   disable_password_authentication = false
 
   platform_fault_domain_count = 1
@@ -33,7 +33,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
     ip_configuration {
       name      = "default"
       primary   = true
-      subnet_id = azurerm_subnet.main.id
+      subnet_id = azurerm_subnet.packer_images.id
     }
   }
 

@@ -93,8 +93,8 @@ variable "vnet_config" {
   type = object({
     address_space             = string
     main_subnet_address_space = string
+    packer_images             = string
     # apps_subnet_address_space = string
-
   })
 }
 

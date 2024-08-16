@@ -62,6 +62,6 @@ variable "tenant_id" {
 }
 
 variable "template_resource_group_name" {
-  description = "The name of the Tooling resource group where the image will be created"
+  description = "The name of the Template resource group where the image will be created"
   type        = string
 }

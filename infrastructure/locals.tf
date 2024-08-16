@@ -19,7 +19,7 @@ locals {
   # Packer Images
   test_image = {
     main = {
-      name     = "pins-vmss-test-${local.resource_suffix}"
+      name     = "pins-vmss-packer-${local.resource_suffix}"
       nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
     }
   }
