@@ -7,6 +7,7 @@ packer {
   }
 }
 
+feature/packer-pipeline-changes
 source "azure-arm" "packer-image" {
   client_id       = var.client_id
   client_secret   = var.client_secret
@@ -17,6 +18,7 @@ source "azure-arm" "packer-image" {
 build {
   name = "azure-devops-agents"
 
+feature/packer-pipeline-changes
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
     managed_image_name                = "packer-image-${formatdate("DD-MMMM-YYYY-hh-mm", timestamp())}"
