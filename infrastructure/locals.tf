@@ -23,6 +23,14 @@ locals {
       nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
     }
   }
+
+  #action groups
+  all_action_groups = toset([
+    "template-app-service"
+
+  ])
+
+
   # secrets = []
 
   # key_vault_refs = merge(
