@@ -16,14 +16,6 @@ locals {
     }
   )
 
-  # Packer Images
-  test_image = {
-    main = {
-      name     = "pins-vmss-packer-${local.resource_suffix}"
-      nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
-    }
-  }
-
   #action groups
   all_action_groups = toset([
     "template-app-service"

@@ -14,7 +14,9 @@ pr:
       - '*'
   paths:
     include:
-    - infrastructure
+      - infrastructure
+    excludes:
+      - packer
 
 resources:
   repositories:

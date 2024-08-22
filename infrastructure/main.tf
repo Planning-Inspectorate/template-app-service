@@ -39,22 +39,6 @@ resource "azurerm_key_vault_access_policy" "admins" {
   storage_permissions     = ["Get", "List", "Set"]
 }
 
-resource "random_password" "packer_admin_password" {
-  length  = 20
-  special = true
-}
-
-resource "azurerm_key_vault_secret" "agents_admin_password" {
-  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
-  name            = "packer-admin-password"
-  value           = random_password.packer_admin_password.result
-  key_vault_id    = azurerm_key_vault.main.id
-  expiration_date = "2025-01-01T00:00:00Z"
-  content_type    = "text/plain"
-
-  tags = local.tags
-}
-
 ## # secrets to be manually populated
 # resource "azurerm_key_vault_secret" "manual_secrets" {
 #   #checkov:skip=CKV_AZURE_41: expiration not valid
