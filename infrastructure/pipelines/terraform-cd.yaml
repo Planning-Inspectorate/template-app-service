@@ -10,6 +10,8 @@ resources:
         branches:
           include:
             - main
+          excludes:
+            - packer
   repositories:
     - repository: templates
       type: github
