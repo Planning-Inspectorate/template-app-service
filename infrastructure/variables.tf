@@ -20,22 +20,19 @@ variable "apps_config" {
   })
 }
 
-# variable "common_config" {
-#   description = "Config for the common resources, such as action groups"
-#   type = object({
-#     resource_group_name = string
-#     action_group_names = object({
-#       bo_tech              = string
-#       bo_service_manager   = string
-#       fo_tech              = string
-#       fo_service_manager   = string
-#       data_service_manager = string
-#       iap                  = string
-#       its                  = string
-#       info_sec             = string
-#     })
-#   })
-# }
+variable "common_config" {
+  description = "Config for the common resources, such as action groups"
+  type = object({
+    resource_group_name = string
+    action_group_names = object({
+      tech            = string
+      service_manager = string
+      iap             = string
+      its             = string
+      info_sec        = string
+    })
+  })
+}
 
 variable "environment" {
   description = "The name of the environment in which resources will be deployed"
