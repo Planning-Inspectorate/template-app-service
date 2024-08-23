@@ -15,7 +15,7 @@ pr:
   paths:
     include:
       - infrastructure
-    excludes:
+    exclude:
       - packer
 
 resources:

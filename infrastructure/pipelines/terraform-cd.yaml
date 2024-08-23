@@ -10,7 +10,7 @@ resources:
         branches:
           include:
             - main
-          excludes:
+          exclude:
             - packer
   repositories:
     - repository: templates
