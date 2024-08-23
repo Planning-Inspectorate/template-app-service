@@ -34,11 +34,11 @@ locals {
   #   }
   # )
 
-  # action_group_ids = {
-  #   tech            = "",
-  #   service_manager = "",
-  #   iap             = "",
-  #   its             = "",
-  #   info_sec        = ""
-  # }
+  action_group_ids = {
+    tech            = data.azurerm_monitor_action_group.common["tech"].id,
+    service_manager = data.azurerm_monitor_action_group.common["service_manager"].id,
+    iap             = data.azurerm_monitor_action_group.common["iap"].id,
+    its             = data.azurerm_monitor_action_group.common["its"].id,
+    info_sec        = data.azurerm_monitor_action_group.common["info_sec"].id
+  }
 }

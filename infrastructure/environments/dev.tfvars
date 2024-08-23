@@ -10,6 +10,16 @@ apps_config = {
 }
 
 # alerts_enabled = false
+common_config = {
+  resource_group_name = "pins-rg-common-dev-ukw-001"
+  action_group_names = {
+    tech                 = "pins-ag-odt-template-app-service-dev"
+    service_manager      = "pins-ag-odt-template-app-service-dev"
+    iap                  = "pins-ag-odt-template-app-service-dev"
+    its                  = "pins-ag-odt-template-app-service-dev"
+    info_sec             = "pins-ag-odt-template-app-service-dev"
+  }
+}
 
 environment = "dev"
 
