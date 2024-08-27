@@ -85,24 +85,24 @@ resource "azurerm_mssql_database" "primary" {
 #   tags = local.tags
 # }
 
-# resource "azurerm_key_vault_secret" "sql_app_connection_string" {
-#   #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
-#   key_vault_id = azurerm_key_vault.main.id
-#   name         = "${local.service_name}-sql-app-connection-string"
-#   value = join(
-#     ";",
-#     [
-#       "sqlserver://${azurerm_mssql_server.primary.fully_qualified_domain_name}",
-#       "database=${azurerm_mssql_database.primary.name}",
-#       "user=${random_id.sql_app_username.b64_url}",
-#       "password=${random_password.sql_app_password.result}",
-#       "trustServerCertificate=false"
-#     ]
-#   )
-#   content_type = "connection-string"
+resource "azurerm_key_vault_secret" "sql_app_connection_string" {
+  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
+  key_vault_id = azurerm_key_vault.main.id
+  name         = "${local.service_name}-sql-app-connection-string"
+  value = join(
+    ";",
+    [
+      "sqlserver://${azurerm_mssql_server.primary.fully_qualified_domain_name}",
+      "database=${azurerm_mssql_database.primary.name}",
+      "user=${random_id.sql_app_username.b64_url}",
+      "password=${random_password.sql_app_password.result}",
+      "trustServerCertificate=false"
+    ]
+  )
+  content_type = "connection-string"
 
-#   tags = local.tags
-# }
+  tags = local.tags
+}
 
 resource "random_id" "sql_admin_username" {
   byte_length = 6
