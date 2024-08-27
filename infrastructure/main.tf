@@ -39,21 +39,21 @@ resource "azurerm_key_vault_access_policy" "admins" {
   storage_permissions     = ["Get", "List", "Set"]
 }
 
-## # secrets to be manually populated
-# resource "azurerm_key_vault_secret" "manual_secrets" {
-#   #checkov:skip=CKV_AZURE_41: expiration not valid
-#   for_each = toset(local.secrets)
+# # secrets to be manually populated
+resource "azurerm_key_vault_secret" "manual_secrets" {
+  #checkov:skip=CKV_AZURE_41: expiration not valid
+  for_each = toset(local.secrets)
 
-#   key_vault_id = azurerm_key_vault.main.id
-#   name         = each.value
-#   value        = "<terraform_placeholder>"
-#   content_type = "plaintext"
+  key_vault_id = azurerm_key_vault.main.id
+  name         = each.value
+  value        = "<terraform_placeholder>"
+  content_type = "plaintext"
 
-#   tags = local.tags
+  tags = local.tags
 
-#   lifecycle {
-#     ignore_changes = [
-#       value
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+}
