@@ -31,58 +31,58 @@ resource "azurerm_virtual_network_peering" "tooling_to_template" {
   provider = azurerm.tooling
 }
 
-# resource "azurerm_subnet" "apps" {
-#   name                 = "${local.org}-snet-${local.service_name}-apps-${var.environment}"
-#   resource_group_name  = azurerm_resource_group.primary.name
-#   virtual_network_name = azurerm_virtual_network.main.name
-#   address_prefixes     = [var.vnet_config.apps_subnet_address_space]
+resource "azurerm_subnet" "apps" {
+  name                 = "${local.org}-snet-${local.service_name}-apps-${var.environment}"
+  resource_group_name  = azurerm_resource_group.primary.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.vnet_config.apps_subnet_address_space]
 
-#   # for app services
-#   delegation {
-#     name = "delegation"
+  # for app services
+  delegation {
+    name = "delegation"
 
-#     service_delegation {
-#       name = "Microsoft.Web/serverFarms"
-#       actions = [
-#         "Microsoft.Network/virtualNetworks/subnets/action"
-#       ]
-#     }
-#   }
-# }
+    service_delegation {
+      name = "Microsoft.Web/serverFarms"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/action"
+      ]
+    }
+  }
+}
 
 ## DNS Zones for Azure Services
 ## Private DNS Zones exist in the tooling subscription and are shared
 ## here we link them to the VNet
 
-# data "azurerm_private_dns_zone" "app_config" {
-#   name                = "privatelink.azconfig.io"
-#   resource_group_name = var.tooling_config.network_rg
+data "azurerm_private_dns_zone" "app_config" {
+  name                = "privatelink.azconfig.io"
+  resource_group_name = var.tooling_config.network_rg
 
-#   provider = azurerm.tooling
-# }
-# resource "azurerm_private_dns_zone_virtual_network_link" "app_config" {
-#   name                  = "${local.org}-vnetlink-app-config-${local.resource_suffix}"
-#   resource_group_name   = var.tooling_config.network_rg
-#   private_dns_zone_name = data.azurerm_private_dns_zone.app_config.name
-#   virtual_network_id    = azurerm_virtual_network.main.id
+  provider = azurerm.tooling
+}
+resource "azurerm_private_dns_zone_virtual_network_link" "app_config" {
+  name                  = "${local.org}-vnetlink-app-config-${local.resource_suffix}"
+  resource_group_name   = var.tooling_config.network_rg
+  private_dns_zone_name = data.azurerm_private_dns_zone.app_config.name
+  virtual_network_id    = azurerm_virtual_network.main.id
 
-#   provider = azurerm.tooling
-# }
+  provider = azurerm.tooling
+}
 
-# data "azurerm_private_dns_zone" "app_service" {
-#   name                = "privatelink.azurewebsites.net"
-#   resource_group_name = var.tooling_config.network_rg
+data "azurerm_private_dns_zone" "app_service" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = var.tooling_config.network_rg
 
-#   provider = azurerm.tooling
-# }
-# resource "azurerm_private_dns_zone_virtual_network_link" "app_service" {
-#   name                  = "${local.org}-vnetlink-app-service-${local.resource_suffix}"
-#   resource_group_name   = var.tooling_config.network_rg
-#   private_dns_zone_name = data.azurerm_private_dns_zone.app_service.name
-#   virtual_network_id    = azurerm_virtual_network.main.id
+  provider = azurerm.tooling
+}
+resource "azurerm_private_dns_zone_virtual_network_link" "app_service" {
+  name                  = "${local.org}-vnetlink-app-service-${local.resource_suffix}"
+  resource_group_name   = var.tooling_config.network_rg
+  private_dns_zone_name = data.azurerm_private_dns_zone.app_service.name
+  virtual_network_id    = azurerm_virtual_network.main.id
 
-#   provider = azurerm.tooling
-# }
+  provider = azurerm.tooling
+}
 
 data "azurerm_private_dns_zone" "database" {
   name                = "privatelink.database.windows.net"
@@ -91,11 +91,11 @@ data "azurerm_private_dns_zone" "database" {
   provider = azurerm.tooling
 }
 
-# resource "azurerm_private_dns_zone_virtual_network_link" "database" {
-#   name                  = "${local.org}-vnetlink-db-${local.resource_suffix}"
-#   resource_group_name   = var.tooling_config.network_rg
-#   private_dns_zone_name = data.azurerm_private_dns_zone.database.name
-#   virtual_network_id    = azurerm_virtual_network.main.id
+resource "azurerm_private_dns_zone_virtual_network_link" "database" {
+  name                  = "${local.org}-vnetlink-db-${local.resource_suffix}"
+  resource_group_name   = var.tooling_config.network_rg
+  private_dns_zone_name = data.azurerm_private_dns_zone.database.name
+  virtual_network_id    = azurerm_virtual_network.main.id
 
-#   provider = azurerm.tooling
-# }
+  provider = azurerm.tooling
+}
