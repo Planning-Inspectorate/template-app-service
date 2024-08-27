@@ -1,10 +1,11 @@
 # variables should be sorted A-Z
 
-# variable "alerts_enabled" {
-#   description = "Whether to enable Azure Monitor alerts"
-#   type        = string
-#   default     = true
-# }
+# tflint-ignore: terraform_unused_declarations
+variable "alerts_enabled" {
+  description = "Whether to enable Azure Monitor alerts"
+  type        = string
+  default     = true
+}
 
 variable "apps_config" {
   description = "Config for the apps"
