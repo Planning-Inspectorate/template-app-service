@@ -24,7 +24,7 @@ locals {
 
   secrets = []
 
-# tflint-ignore: terraform_unused_declarations
+  # tflint-ignore: terraform_unused_declarations
   key_vault_refs = merge(
     {
       for k, v in azurerm_key_vault_secret.manual_secrets : k => "@Microsoft.KeyVault(SecretUri=${v.versionless_id})"
