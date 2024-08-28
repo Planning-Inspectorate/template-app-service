@@ -49,9 +49,9 @@ module "template_app_web" {
   }
 }
 
-# ## RBAC for secrets
-# resource "azurerm_role_assignment" "app_web_secrets_user" {
-#   scope                = azurerm_key_vault.main.id
-#   role_definition_name = "Key Vault Secrets User"
-#   principal_id         = module.template_app_web.principal_id
-# }
+## RBAC for secrets
+resource "azurerm_role_assignment" "app_web_secrets_user" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.template_app_web.principal_id
+}
