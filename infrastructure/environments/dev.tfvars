@@ -1,5 +1,5 @@
 apps_config = {
-  app_service_plan_sku     = "B1"
+  app_service_plan_sku     = "B2"
   node_environment         = "development"
   private_endpoint_enabled = false
 
