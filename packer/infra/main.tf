@@ -1,0 +1,152 @@
+module "primary_region" {
+  source  = "claranet/regions/azurerm"
+  version = "7.1.1"
+
+  azure_region = local.primary_location
+}
+
+locals {
+  org              = "pins"
+  service_name     = "template-packer"
+  primary_location = "uksouth"
+
+  resource_suffix = "${local.service_name}-${var.environment}"
+
+  tags = merge(
+    var.tags,
+    {
+      CreatedBy   = "Terraform"
+      Environment = var.environment
+      location    = local.primary_location
+      Owner       = "DevOps"
+      ServiceName = local.service_name
+    }
+  )
+
+  test_image = {
+    main = {
+      name     = "pins-vmss-packer-${local.resource_suffix}"
+      nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
+    }
+  }
+}
+
+resource "azurerm_container_registry" "acr" {
+  #checkov:skip=CKV_AZURE_137: Admin account required so App services can pull containers when updated by pipeline
+  #checkov:skip=CKV_AZURE_139: Access over internet required so Azure DevOps can push/pull images
+  #checkov:skip=CKV_AZURE_163: Enable vulnerability scanning for container images
+  name                = "pinscr${replace(local.resource_suffix, "-", "")}"
+  resource_group_name = data.azurerm_resource_group.template_rg.name
+  location            = local.primary_location
+  admin_enabled       = true
+  sku                 = "Basic"
+
+  tags = local.tags
+}
+
+resource "random_password" "packer_admin_password" {
+  length  = 20
+  special = true
+}
+
+resource "azurerm_key_vault_secret" "agents_admin_password" {
+  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
+  name            = "packer-admin-password"
+  value           = random_password.packer_admin_password.result
+  key_vault_id    = data.azurerm_key_vault.template_key_vault.id
+  expiration_date = "2026-01-01T00:00:00Z"
+  content_type    = "text/plain"
+
+  tags = local.tags
+}
+
+resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
+  #checkov:skip=CKV_AZURE_49: SSH key authentication not required
+  #checkov:skip=CKV_AZURE_97: Encryption at host not required
+  #checkov:skip=CKV_AZURE_149: Password authentication required
+  for_each = local.test_image
+
+  name                = each.value["name"]
+  resource_group_name = data.azurerm_resource_group.template_rg.name
+  location            = local.primary_location
+  sku                 = "Standard_DS2_v2"
+  instances           = 1
+
+  overprovision          = false
+  single_placement_group = false
+
+  admin_username                  = "adminuser"
+  admin_password                  = azurerm_key_vault_secret.agents_admin_password.value
+  disable_password_authentication = false
+
+  platform_fault_domain_count = 1
+
+  source_image_id = data.azurerm_image.packer_images.id
+
+  boot_diagnostics {
+    storage_account_uri = null
+  }
+
+  network_interface {
+    enable_accelerated_networking = true
+    name                          = each.value["nic_name"]
+    primary                       = true
+
+    ip_configuration {
+      name      = "default"
+      primary   = true
+      subnet_id = azurerm_subnet.packer_main_subnet.id
+    }
+  }
+
+  os_disk {
+    caching              = "ReadOnly"
+    storage_account_type = "Standard_LRS"
+
+    diff_disk_settings {
+      option = "Local"
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      automatic_instance_repair,
+      automatic_os_upgrade_policy,
+      extension,
+      instances,
+      tags
+    ]
+  }
+
+  tags = local.tags
+}
+
+resource "azurerm_virtual_network" "packer" {
+  name                = "${local.org}-packer-vnet-${local.resource_suffix}"
+  location            = local.primary_location
+  resource_group_name = data.azurerm_resource_group.template_rg.name
+  address_space       = [var.vnet_packer.address_space]
+
+  tags = local.tags
+}
+
+resource "azurerm_subnet" "packer_main_subnet" {
+  name                 = "${local.org}-snet-packer-images-${local.resource_suffix}"
+  resource_group_name  = data.azurerm_resource_group.template_rg.name
+  virtual_network_name = azurerm_virtual_network.packer.name
+  address_prefixes     = [var.vnet_packer.packer_subnet]
+}
+
+resource "azurerm_virtual_network_peering" "packer_to_template" {
+  name                      = "${local.org}-peer-${local.service_name}-to-template-${var.environment}"
+  resource_group_name       = azurerm_virtual_network.packer.resource_group_name
+  remote_virtual_network_id = data.azurerm_virtual_network.template_vnet.id # template VNet changeme
+  virtual_network_name      = azurerm_virtual_network.packer.name
+}
+
+resource "azurerm_virtual_network_peering" "template_to_packer" {
+  name                      = "${local.org}-peer-tooling-to-${local.service_name}-${var.environment}"
+  resource_group_name       = data.azurerm_virtual_network.template_vnet.resource_group_name
+  remote_virtual_network_id = azurerm_virtual_network.packer.id
+  virtual_network_name      = data.azurerm_virtual_network.template_vnet.name # changme to template vnet data call or var
+}
