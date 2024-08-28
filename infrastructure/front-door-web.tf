@@ -115,11 +115,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
     }
   }
 
-  managed_rule {
-    type    = "Microsoft_DefaultRuleSet"
-    version = "2.1"
-    action  = "Log"
-  }
+  # managed_rule {
+  #   type    = "Microsoft_DefaultRuleSet"
+  #   version = "2.1"
+  #   action  = "Log"
+  # }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "web" {
