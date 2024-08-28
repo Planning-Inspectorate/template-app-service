@@ -9,7 +9,7 @@ apps_config = {
   }
 }
 
-# alerts_enabled = false
+alerts_enabled = false
 common_config = {
   resource_group_name = "pins-rg-common-dev-ukw-001"
   action_group_names = {
@@ -47,4 +47,4 @@ vnet_config = {
   apps_subnet_address_space = "10.18.1.0/24"
 }
 
-# web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
+web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
