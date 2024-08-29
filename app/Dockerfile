@@ -12,7 +12,7 @@ RUN npm ci
 ENV SWAGGER_JSON_DIR=./src/server/openapi.json
 ENV DATABASE_URL=$DATABASE_URL
 
-WORKDIR /src/app/appeals/api
+WORKDIR /src/app/
 RUN npx prisma generate
 
 EXPOSE 3000
