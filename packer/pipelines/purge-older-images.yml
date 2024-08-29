@@ -9,7 +9,7 @@ variables:
   azureServiceConnection: Azure DevOps Pipelines - DevOps Template - Infrastructure DEV
   subscriptionId: 962e477c-0f3b-4372-97fc-a198a58e259e
   template_resource_group_name: pins-rg-template-dev
-  build_agent_scale_set_name: pins-vmss-packer-template-dev
+  build_agent_scale_set_name: pins-vmss-packer-template-packer-dev
 
 jobs:
   - job: Cleanup
@@ -19,11 +19,11 @@ jobs:
         inputs:
           ConnectedServiceNameARM: $(azureServiceConnection)
           ScriptType: 'filePath'
-          ScriptPath: $(Build.Repository.LocalPath)/RemoveVmssUnusedImages.ps1
+          ScriptPath: $(Build.Repository.LocalPath)/packer/agent-build/RemoveVmssUnusedImages.ps1
           ScriptArguments: >
-            -ResourceGroupName $(tooling_resource_group_name) `
+            -ResourceGroupName $(template_resource_group_name) `
             -VMScaleSetName $(build_agent_scale_set_name)
           errorActionPreference: stop
           FailOnStandardError: true
           TargetAzurePs: latestVersion
-        displayName: 'Cleanup Images'
+        displayName: 'Cleanup Older Images'
