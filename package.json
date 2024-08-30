@@ -4,22 +4,20 @@
   "description": "Basic Hello World app for testing",
   "main": "index.js",
   "prisma": {
-    "schema": "src/database/schema.prisma",
-    "seed": "node src/database/seed/seed-development.js"
+    "schema": "app/src/database/schema.prisma",
+    "seed": "node app/src/database/seed/seed-development.js"
   },
   "type": "module",
   "scripts": {
-    "build": "node src/util/build.js",
-    "start": "npm run build && node src/server.js",
-    "dev": "npm run prisma-generate && nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
+    "build": "node app/src/util/build.js",
+    "start": "npm run build && node app/src/server.js",
+    "dev": "npm run prisma-generate && nodemon --watch app/src --ext js,scss,html,njk --exec \"npm run start\"",
     "test": "npm run prisma-generate && cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest",
     "db:migrate": "npx prisma migrate dev",
     "db:migrate:prod": "npx prisma migrate deploy",
     "db:push": "npx prisma db push --accept-data-loss",
     "db:reset": "npx prisma migrate reset --force",
     "db:seed": "npm run prisma-generate && npx prisma db seed",
-    "db:seed:training": "npm run prisma-generate && node src/database/seed/seed-training.js",
-    "db:seed:prod": "npm run prisma-generate && node src/database/seed/seed-production.js",
     "prisma:format": "npx prisma format",
     "prisma-generate": "npx prisma generate",
     "coverage": "npm run prisma-generate && cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
