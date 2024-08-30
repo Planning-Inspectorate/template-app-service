@@ -19,7 +19,7 @@ jobs:
         inputs:
           ConnectedServiceNameARM: $(azureServiceConnection)
           ScriptType: 'filePath'
-          ScriptPath: $(Build.Repository.LocalPath)/packer/agent-build/RemoveVmssUnusedImages.ps1
+          ScriptPath: $(Build.Repository.LocalPath)/packer/image-build/RemoveVmssUnusedImages.ps1
           ScriptArguments: >
             -ResourceGroupName $(template_resource_group_name) `
             -VMScaleSetName $(build_agent_scale_set_name)
