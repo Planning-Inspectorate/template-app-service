@@ -23,7 +23,7 @@ locals {
     }
   )
 
-  test_image = {
+  agent_pools = {
     main = {
       name     = "pins-vmss-${local.resource_suffix}"
       nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
@@ -51,13 +51,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
   #checkov:skip=CKV_AZURE_49: SSH key authentication not required
   #checkov:skip=CKV_AZURE_97: Encryption at host not required
   #checkov:skip=CKV_AZURE_149: Password authentication required
-  for_each = local.test_image
+  for_each = local.agent_pools
 
   name                = each.value["name"]
   resource_group_name = data.azurerm_resource_group.template_rg.name
   location            = local.primary_location
   sku                 = "Standard_DS2_v2"
-  instances           = 1
+  instances           = 2
 
   overprovision          = false
   single_placement_group = false
@@ -69,6 +69,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
   platform_fault_domain_count = 1
 
   source_image_id = data.azurerm_image.packer_images.id
+
+  # source_image_reference {
+  #   publisher = "Canonical"
+  #   offer     = "0001-com-ubuntu-server-jammy"
+  #   sku       = "22_04-lts"
+  #   version   = "latest"
+  # }
 
   boot_diagnostics {
     storage_account_uri = null

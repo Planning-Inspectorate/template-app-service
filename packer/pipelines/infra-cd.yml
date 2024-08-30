@@ -23,7 +23,8 @@ resources:
           include:
             - packer
           exclude:
-            - main
+            - app
+            - infrastructure
   repositories:
     - repository: templates
       type: github
