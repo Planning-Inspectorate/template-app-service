@@ -13,7 +13,10 @@
 		"lint:js": "npx eslint .",
 		"lint:js:fix": "npx eslint . --fix",
 		"prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
-		"dev": "turbo run dev --filter=./appeals/* --no-cache --parallel --continue",
+		"build": "node src/util/build.js",
+		"start": "npm run build && node src/server.js",
+		"dev": "nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
+		"test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest",
 		"app": "npm run dev --workspace=template-app",
 		"c4": "docker pull structurizr/lite && docker run -it --rm -p 8082:8080 -v $PWD:/usr/local/structurizr structurizr/lite"
 	},
