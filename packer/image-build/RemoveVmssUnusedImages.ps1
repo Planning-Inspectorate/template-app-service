@@ -7,9 +7,6 @@ Param(
   [String]$VMScaleSetName,
 
   [Parameter(Mandatory=$false)]
-  [Int]$ExpireHours = 12,
-
-  [Parameter(Mandatory=$false)]
   [Switch]$WhatIf
 )
 
@@ -40,14 +37,13 @@ Try {
   Exit 1
 }
 
+# Find the latest image based on the date in the name
+$LatestImage = $Images | Sort-Object { $_.Name -match '\d{4}-\d{2}-\d{2}-\d{4}'; [DateTime]::ParseExact($matches[0], 'yyyy-MM-dd-HHmm', $null) } -Descending | Select-Object -First 1
+Write-Host "[$ScriptName] Latest image is $($LatestImage.Name)"
+
 $RemovedCount = 0
 Foreach ($Image in $Images) {
-  # Convert the datestamp in the image name to a DateTime object
-  $DateString = ($Image.Name).Split('-')[2]
-  $ImageDate = [DateTime]::ParseExact($DateString, 'DD-MMMM-YYYY-HHMMaa', $null)
-
-  # Remove any images not in-use by the VM Scale Set and >=12 hours old
-  If (!($Image.Name -eq $ImageName) -and ($ImageDate -le $StartTime.AddHours(-$ExpireHours))) {
+  If ($Image.Name -ne $LatestImage.Name) {
     Try {
       If ($WhatIf) {
         Write-Host "[$ScriptName] [WhatIf] Would have removed image: $($Image.Name)"
@@ -67,7 +63,7 @@ Foreach ($Image in $Images) {
     }
 
   } Else {
-    Write-Host "[$ScriptName] Skipping image: $($Image.Name)"
+    Write-Host "[$ScriptName] Keeping latest image: $($Image.Name)"
   }
 }
 
