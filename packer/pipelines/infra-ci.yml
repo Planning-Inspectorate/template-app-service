@@ -9,9 +9,13 @@ resources:
         branches:
           include:
             - packer
+          exclude:
+            - app
+            - infrastructure
+            - main
         paths:
           include:
-            - packer/**
+            - 'packer/*'
   repositories:
     - repository: templates
       type: github
