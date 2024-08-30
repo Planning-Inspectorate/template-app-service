@@ -1,21 +1,23 @@
 pool:
   vmImage: ubuntu-latest
 
+trigger:
+  branches:
+    include:
+      - packer
+    exclude:
+      - app
+      - Infrastructure
+      - main
+  paths:
+    include:
+      - packer/**
+
 resources:
   pipelines:
     - pipeline: terraform-ci
       source: Infrastructure PR
-      trigger:
-        branches:
-          include:
-            - packer
-          exclude:
-            - app
-            - infrastructure
-            - main
-        paths:
-          include:
-            - 'packer/*'
+
   repositories:
     - repository: templates
       type: github
