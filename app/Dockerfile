@@ -1,6 +1,6 @@
 FROM node:18-alpine
 WORKDIR /src/app
-COPY src/database/schema.prisma ./
+COPY schema.prisma ./
 COPY package*.json ./
 
 
