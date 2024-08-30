@@ -7,7 +7,7 @@ trigger:
       - packer
     exclude:
       - app
-      - Infrastructure
+      - infrastructure
       - main
   paths:
     include:
