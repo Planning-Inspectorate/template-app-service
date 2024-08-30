@@ -11,6 +11,7 @@ pr:
   paths:
     exclude:
       - infrastructure
+      - packer
 
 resources:
   repositories:
