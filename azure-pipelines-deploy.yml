@@ -1,5 +1,19 @@
-pr: none
-trigger: none
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - infrastructure
+      - packer
+
+trigger:
+  branches:
+    include:
+      - app
+    exclude:
+      - packer
+      - infrastructure
 
 resources:
   repositories:
@@ -15,6 +29,10 @@ resources:
         branches:
           include:
             - main
+        paths:
+          exclude:
+          - infrastructure
+          - packer
 
 extends:
   template: stages/wrapper_cd.yml@templates

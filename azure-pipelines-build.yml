@@ -1,4 +1,11 @@
-pr: none
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - infrastructure
+      - packer
 
 trigger:
   branches:
@@ -7,6 +14,7 @@ trigger:
   paths:
     exclude:
       - infrastructure
+      - packer
 
 resources:
   repositories:

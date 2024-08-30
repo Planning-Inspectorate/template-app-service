@@ -8,6 +8,13 @@ packer {
 }
 
 source "azure-arm" "packer-image" {
+  azure_tags = {
+    Environment      = "Dev"
+    Project          = "Template"
+    CreatedBy        = "Packer"
+    TerraformVersion = "${var.terraform_version}"
+  }
+
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
@@ -19,7 +26,7 @@ build {
 
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "packer-image-${formatdate("DD-MMMM-YYYY-HHMMaa", timestamp())}"
+    managed_image_name                = "agent-ubuntu20-terraform${var.terraform_version}-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
@@ -30,10 +37,15 @@ build {
     vm_size  = "Standard_DS2_v2"
   }
 
-  provisioner "file" {
-    source      = "config.sh"
-    destination = "/tmp/config.sh"
-  }
+  # provisioner "shell" {
+  #   execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
+  #   script          = "${path.cwd}/config.sh"
+  # }
+
+  # provisioner "file" {
+  #   source      = "config.sh"
+  #   destination = "/tmp/config.sh"
+  # }
 
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
@@ -64,4 +76,9 @@ variable "tenant_id" {
 variable "template_resource_group_name" {
   description = "The name of the Template resource group where the image will be created"
   type        = string
+}
+
+variable "terraform_version" {
+  description = "The version of Terraform used in the build"
+  type        =  string
 }

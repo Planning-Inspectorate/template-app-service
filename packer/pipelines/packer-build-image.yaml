@@ -18,15 +18,22 @@ variables:
 
 jobs:
   - job: Build
-    displayName: Init and Build and Save Azure Scale Set Image
+    displayName: Build and Save Azure Scale Set Image
     steps:
       - template: steps/azure_auth.yml@templates
         parameters:
           subscriptionId: $(ODT_DEV_SUBSCRIPTION_ID)
-      - script: packer init .
+      - script: |
+          DEFAULT_TERRAFORM_VERSION=$(grep 'DEFAULT_TERRAFORM_VERSION=' $(Build.Repository.LocalPath)/packer/image-build/tools.sh | cut -d '"' -f 2)
+          echo "##vso[task.setvariable variable=TERRAFORM_VERSION]$DEFAULT_TERRAFORM_VERSION"
+        displayName: 'Extract DEFAULT_TERRAFORM_VERSION'
+      - script: |
+          packer init .
         displayName: Packer init
         workingDirectory: $(Build.Repository.LocalPath)/packer/image-build
-      - script: packer build .
+      - script: |
+          echo "TERRAFORM_VERSION: $(TERRAFORM_VERSION)"
+          packer build -var "terraform_version=$(TERRAFORM_VERSION)" .
         displayName: Packer Build
         env:
           PKR_VAR_client_id: $(AZURE_SERVICE_PRINCIPAL_ID)
