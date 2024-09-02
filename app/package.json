@@ -1,16 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "template-app",
-  "version": "0.0.0",
-  "description": "Basic Hello World app for testing",
-  "main": "index.js",
-  "prisma": {
-    "schema": "src/database/schema.prisma",
-    "seed": "node src/database/seed/seed-development.js"
-  },
-  "type": "module",
-  "scripts": {
-=======
 	"name": "template-app-service",
 	"private": true,
 	"workspaces": [
@@ -25,7 +13,6 @@
   	},
   	"type": "module",
 	"scripts": {
->>>>>>> 00c7808 (changing local tags refs)
     "build": "node src/util/build.js",
     "start": "npm run build && node src/server.js",
     "dev": "npm run prisma-generate && nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
