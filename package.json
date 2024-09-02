@@ -8,14 +8,14 @@
 		"node": ">=18.0.0 <19.0.0"
 	},
 	"prisma": {
-    "schema": "app/src/database/schema.prisma",
-    "seed": "node app/src/database/seed/seed-development.js"
+    "schema": "src/database/schema.prisma",
+    "seed": "node src/database/seed/seed-development.js"
   	},
   	"type": "module",
 	"scripts": {
-    "build": "node app/src/util/build.js",
-    "start": "npm run build && node app/src/server.js",
-    "dev": "npm run prisma-generate && nodemon --watch app/src --ext js,scss,html,njk --exec \"npm run start\"",
+    "build": "node src/util/build.js",
+    "start": "npm run build && node src/server.js",
+    "dev": "npm run prisma-generate && nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
     "test": "npm run prisma-generate && cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest",
     "db:migrate": "npx prisma migrate dev",
     "db:migrate:prod": "npx prisma migrate deploy",
