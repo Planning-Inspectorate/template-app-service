@@ -10,7 +10,7 @@ ENV NODE_ENV=dev
 RUN npm ci
 
 # relative to cwd
-ENV SWAGGER_JSON_DIR=./src/server/openapi.json
+ENV SWAGGER_JSON_DIR=./app/src/server/openapi.json
 ENV DATABASE_URL=$DATABASE_URL
 
 WORKDIR /src/app
