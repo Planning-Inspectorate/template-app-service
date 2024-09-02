@@ -14,7 +14,7 @@ ENV SWAGGER_JSON_DIR=./src/server/openapi.json
 ENV DATABASE_URL=$DATABASE_URL
 
 WORKDIR /src/app
-RUN npx prisma generate --schema='./src/database/schema.prisma'
+RUN npx prisma generate --schema='app/src/database/schema.prisma'
 
 
 EXPOSE 3000
