@@ -1,9 +1,9 @@
 {
-	"name": "back-office",
+	"name": "template-app-service",
 	"private": true,
 	"workspaces": [
 		"app/*",
-		"app/src/*",
+		"app/src/*"
 	],
 	"engines": {
 		"node": ">=18.0.0 <19.0.0"
