@@ -1,5 +1,8 @@
 {
 	"name": "template-app-service",
+  "version": "0.0.0",
+  "description": "Basic Hello World app for testing",
+  "main": "index.js",
 	"private": true,
 	"workspaces": [
 		"app/*"
@@ -7,24 +10,12 @@
 	"engines": {
 		"node": ">=18.0.0 <19.0.0"
 	},
-	"prisma": {
-    "schema": "src/database/schema.prisma",
-    "seed": "node src/database/seed/seed-development.js"
-  	},
-  	"type": "module",
+  "type": "module",
 	"scripts": {
     "build": "node src/util/build.js",
     "start": "npm run build && node src/server.js",
-    "dev": "npm run prisma-generate && nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
-    "test": "npm run prisma-generate && cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "db:migrate": "npx prisma migrate dev",
-    "db:migrate:prod": "npx prisma migrate deploy",
-    "db:push": "npx prisma db push --accept-data-loss",
-    "db:reset": "npx prisma migrate reset --force",
-    "db:seed": "npm run prisma-generate && npx prisma db seed",
-    "prisma:format": "npx prisma format",
-    "prisma-generate": "npx prisma generate",
-    "coverage": "npm run prisma-generate && cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
+    "dev": "nodemon --watch src --ext js,scss,html,njk --exec \"npm run start\"",
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "license": "MIT",
   "dependencies": {
@@ -35,14 +26,12 @@
     "govuk-frontend": "^4.7.0",
     "nunjucks": "^3.2.4",
     "pino": "^8.14.1",
-    "@prisma/client": "4.16.1",
     "pino-pretty": "^10.1.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
-    "prisma": "4.16.1",
     "sass": "^1.64.1"
   }
 }
