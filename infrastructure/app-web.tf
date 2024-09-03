@@ -37,6 +37,7 @@ module "template_app_web" {
     APPLICATIONINSIGHTS_CONNECTION_STRING      = local.key_vault_refs["app-insights-connection-string"]
     ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
     NODE_ENV                                   = var.apps_config.node_environment
+    APP_HOSTNAME                               = var.web_app_domain
 
     # logging
     LOG_LEVEL_FILE   = var.apps_config.logging.level_file
