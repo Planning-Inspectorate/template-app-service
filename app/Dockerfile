@@ -1,5 +1,5 @@
 # Stage 1/3 - Insatll
-FROM ubuntu:14.04.4
+FROM alpine:3.4
 USER root
 RUN apk update
 # TODO: Remove this once these get fixed:
