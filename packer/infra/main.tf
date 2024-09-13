@@ -109,7 +109,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
 }
 
 resource "azurerm_virtual_network" "packer" {
-  name                = "${local.org}-packer-vnet-${local.resource_suffix}"
+  name                = "${local.org}-vnet-${local.resource_suffix}"
   location            = local.primary_location
   resource_group_name = data.azurerm_resource_group.template_rg.name
   address_space       = [var.vnet_packer.address_space]
@@ -118,7 +118,7 @@ resource "azurerm_virtual_network" "packer" {
 }
 
 resource "azurerm_subnet" "packer_main_subnet" {
-  name                 = "${local.org}-snet-packer-images-${local.resource_suffix}"
+  name                 = "${local.org}-snet-images-${local.resource_suffix}"
   resource_group_name  = data.azurerm_resource_group.template_rg.name
   virtual_network_name = azurerm_virtual_network.packer.name
   address_prefixes     = [var.vnet_packer.packer_subnet]
