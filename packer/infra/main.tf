@@ -25,23 +25,10 @@ locals {
 
   test_image = {
     main = {
-      name     = "pins-vmss-packer-${local.resource_suffix}"
+      name     = "pins-vmss-${local.resource_suffix}"
       nic_name = "pins-vnet-azure-agents-nic-test-${local.resource_suffix}"
     }
   }
-}
-
-resource "azurerm_container_registry" "acr" {
-  #checkov:skip=CKV_AZURE_137: Admin account required so App services can pull containers when updated by pipeline
-  #checkov:skip=CKV_AZURE_139: Access over internet required so Azure DevOps can push/pull images
-  #checkov:skip=CKV_AZURE_163: Enable vulnerability scanning for container images
-  name                = "pinscr${replace(local.resource_suffix, "-", "")}"
-  resource_group_name = data.azurerm_resource_group.template_rg.name
-  location            = local.primary_location
-  admin_enabled       = true
-  sku                 = "Basic"
-
-  tags = local.tags
 }
 
 resource "random_password" "packer_admin_password" {

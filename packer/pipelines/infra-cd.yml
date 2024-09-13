@@ -42,3 +42,25 @@ extends:
     containerPrefix: terraform-state-devops-template-packer-
     workingDirectory: $(Build.Repository.LocalPath)/packer/infra
     environmentVarFilePath: $(Build.Repository.LocalPath)/packer/infra/environments
+
+stages:
+  - stage: TerraformPlan
+    jobs:
+      - job: Plan
+        steps:
+          - script: terraform plan -out=tfplan
+            displayName: 'Terraform Plan'
+
+  - stage: TerraformApply
+    dependsOn: TerraformPlan
+    condition: succeeded()
+    approval:
+      steps:
+        - task: ManualValidation@0
+          inputs:
+            instructions: 'Please review the Terraform plan before applying.'
+    jobs:
+      - job: Apply
+        steps:
+          - script: terraform apply tfplan
+            displayName: 'Terraform Apply'

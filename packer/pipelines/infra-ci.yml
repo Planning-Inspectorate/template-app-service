@@ -11,7 +11,7 @@ trigger:
       - main
   paths:
     include:
-      - packer/**
+      - packer
 
 resources:
   pipelines:
