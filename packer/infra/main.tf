@@ -57,7 +57,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
   resource_group_name = data.azurerm_resource_group.template_rg.name
   location            = local.primary_location
   sku                 = "Standard_DS2_v2"
-  instances           = 2
+  instances           = 4
 
   overprovision          = false
   single_placement_group = false
