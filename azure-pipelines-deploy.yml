@@ -11,9 +11,10 @@ trigger:
   branches:
     include:
       - app
+  paths:
     exclude:
-      - packer
       - infrastructure
+      - packer
 
 resources:
   repositories:
