@@ -30,10 +30,10 @@ resources:
         branches:
           include:
             - main
-        paths:
-          exclude:
-          - infrastructure
-          - packer
+      paths:
+        exclude:
+        - infrastructure
+        - packer
 
 extends:
   template: stages/wrapper_cd.yml@templates
