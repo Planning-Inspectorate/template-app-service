@@ -33,7 +33,7 @@ resources:
   #     ref: refs/tags/release/3.17.0
 
 extends:
-  template: terraform_plan_apply.yml@templates
+  template: terraform_plan_apply.yml
   parameters:
     environments:
       - name: Dev
