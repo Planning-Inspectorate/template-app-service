@@ -1,0 +1,152 @@
+# A pipeline template for running a Terraform plan and apply
+# Uses Service Connections for access Azure, both for remote state and for the terraform actions
+
+parameters:
+  - name: automaticDeploymentEnvironments
+    type: object
+    default:
+      - name: Dev
+  - name: environments
+    type: object
+    default:
+      - name: Dev
+      - name: Test
+        dependsOn:
+          - Dev
+      - name: Prod
+        dependsOn:
+          - Test
+  - name: pool
+    type: object
+    default:
+      name: pins-template-test
+  - name: workingDirectory
+    type: string
+    default: $(System.DefaultWorkingDirectory)
+  - name: serviceConnectionPrefix
+    type: string
+  - name: storageAccountName
+    type: string
+  - name: resourceGroupName
+    type: string
+  - name: containerPrefix
+    type: string
+  - name: planFileName
+    type: string
+    default: main.tfplan
+  - name: environmentVarFilePath
+    type: string
+    default: ''
+
+variables:
+  - name: environmentsSource
+    ${{ if in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI', 'ResourceTrigger') }}:
+      value: automaticDeploymentEnvironments
+    ${{ else }}:
+      value: environments
+
+stages:
+  - ${{ each environment in parameters[variables.environmentsSource] }}:
+    - template: ../stages/wrapper_stage.yml
+      parameters:
+        name: Terraform Plan ${{ environment.name }}
+        pool: ${{ parameters.pool }}
+        dependsOn:
+          - ${{ each dependsOn in environment.dependsOn }}:
+            - terraform_plan_${{ lower(dependsOn) }}
+        jobs:
+          - job: plan
+            displayName: Plan
+            workspace:
+              clean: all
+            timeoutInMinutes: 30
+            steps:
+              - task: TerraformTaskV4@4
+                displayName: Initialize Terraform
+                inputs:
+                  workingDirectory: ${{ parameters.workingDirectory }}
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: ${{ format('{0} {1}', parameters.serviceConnectionPrefix, environment.name) }}
+                  backendAzureRmStorageAccountName: ${{ parameters.storageAccountName }}
+                  backendAzureRmResourceGroupName: ${{ parameters.resourceGroupName }}
+                  backendAzureRmContainerName: ${{ parameters.containerPrefix }}${{ lower(environment.name) }}
+                  backendAzureRmKey: ${{ format('{0}.tfstate', lower(environment.name)) }}
+                env:
+                  ARM_USE_OIDC: true
+                  ARM_USE_AZUREAD: true
+              - task: TerraformTaskV4@4
+                name: terraformPlan${{ environment.name }}
+                displayName: Create Terraform Plan
+                inputs:
+                  workingDirectory: ${{ parameters.workingDirectory }}
+                  provider: 'azurerm'
+                  command: 'plan'
+                  # use -input=false so terraform doesn't prompt for input
+                  ${{ if eq(parameters.environmentVarFilePath, '') }}:
+                    commandOptions: '-input=false -out ${{ parameters.planFileName }}'
+                  ${{ else }}:
+                    # add a var file for each environment, if configured
+                    commandOptions: ${{ format('-input=false -out {0} -var-file={1}/{2}.tfvars', parameters.planFileName, parameters.environmentVarFilePath, lower(environment.name)) }}
+                  environmentServiceNameAzureRM: ${{ format('{0} {1}', parameters.serviceConnectionPrefix, environment.name) }}
+                env:
+                  ARM_USE_OIDC: true
+                  ARM_USE_AZUREAD: true
+              - task: CopyFiles@2
+                displayName: Create plan artifact
+                inputs:
+                  SourceFolder: ${{ parameters.workingDirectory }}
+                  Contents: |
+                    !.git
+                    !**/.terraform/**
+                    **/**
+                  TargetFolder: $(Build.ArtifactStagingDirectory)
+              - publish: $(Build.ArtifactStagingDirectory)
+                artifact: terraform-plan-${{ lower(environment.name) }}
+                displayName: Publish plan artifact
+    - template: ../stages/wrapper_stage.yml
+      parameters:
+        name: Terraform Apply ${{ environment.name }}
+        pool: ${{ parameters.pool }}
+        condition: eq(stageDependencies.terraform_plan_${{ lower(environment.name) }}.outputs['plan.terraformPlan${{ environment.name }}.changesPresent'], 'true')
+        dependsOn:
+          - ${{ each dependsOn in environment.dependsOn }}:
+            - terraform_apply_${{ lower(dependsOn) }}
+          - terraform_plan_${{ lower(environment.name) }}
+        jobs:
+          - deployment: apply
+            displayName: Apply
+            environment:
+              name: ${{ environment.name }}
+            workspace:
+              clean: all
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - download: current
+                      artifact: terraform-plan-${{ lower(environment.name) }}
+                    - task: CopyFiles@2
+                      inputs:
+                        sourceFolder: $(Pipeline.Workspace)/terraform-plan-${{ lower(environment.name) }}
+                        contents: '**'
+                        targetFolder: ${{ parameters.workingDirectory }}
+                    - script: |
+                        /bin/chmod -R +x .
+                      workingDirectory: ${{ parameters.workingDirectory }}
+                      # set file perms so that terraform plugins can be executed
+                      # see https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml#tips
+                      # "Build artifacts are stored on a Windows filesystem, which causes all UNIX permissions to be lost, including the execution bit."
+                      displayName: Set File Perms
+                    - task: TerraformTaskV4@4
+                      displayName: Apply Terraform Plan
+                      inputs:
+                        workingDirectory: ${{ parameters.workingDirectory }}
+                        provider: 'azurerm'
+                        command: 'apply'
+                        # use -input=false so terraform doesn't prompt for input
+                        commandOptions: '-input=false ${{ parameters.planFileName }}'
+                        environmentServiceNameAzureRM: ${{ format('{0} {1}', parameters.serviceConnectionPrefix, environment.name) }}
+                      env:
+                        ARM_USE_OIDC: true
+                        ARM_USE_AZUREAD: true

@@ -25,15 +25,15 @@ resources:
           exclude:
             - app
             - infrastructure
-  repositories:
-    - repository: templates
-      type: github
-      endpoint: Planning-Inspectorate
-      name: Planning-Inspectorate/common-pipeline-templates
-      ref: refs/tags/release/3.17.0
+  # repositories:
+  #   - repository: templates
+  #     type: github
+  #     endpoint: Planning-Inspectorate
+  #     name: Planning-Inspectorate/common-pipeline-templates
+  #     ref: refs/tags/release/3.17.0
 
 extends:
-  template: pipelines/terraform_plan_apply.yml@templates
+  template: terraform_plan_apply.yml@templates
   parameters:
     environments:
       - name: Dev
@@ -43,27 +43,3 @@ extends:
     containerPrefix: terraform-state-devops-template-packer-
     workingDirectory: $(Build.Repository.LocalPath)/packer/infra
     environmentVarFilePath: $(Build.Repository.LocalPath)/packer/infra/environments
-
-#     deploymentStages:
-
-# stages:
-#   - stage: TerraformPlan
-#     jobs:
-#       - job: Plan
-#         steps:
-#           - script: terraform plan -out=tfplan
-#             displayName: 'Terraform Plan'
-
-#   - stage: TerraformApply
-#     dependsOn: TerraformPlan
-#     condition: succeeded()
-#     approval:
-#       steps:
-#         - task: ManualValidation@0
-#           inputs:
-#             instructions: 'Please review the Terraform plan before applying.'
-#     jobs:
-#       - job: Apply
-#         steps:
-#           - script: terraform apply tfplan
-#             displayName: 'Terraform Apply'
