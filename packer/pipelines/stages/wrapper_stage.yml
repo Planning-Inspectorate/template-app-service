@@ -1,0 +1,38 @@
+parameters:
+  - name: condition
+    type: string
+    default: succeeded()
+  - name: dependsOn
+    type: object
+    default: []
+  - name: name
+    type: string
+  - name: jobs
+    type: jobList
+  - name: pool
+    type: object
+    default:
+      name: pins-odt-agent-pool
+  - name: variables
+    type: object
+    default: []
+  - name: workingDirectory
+    type: string
+    default: $(System.DefaultWorkingDirectory)
+
+stages:
+  - stage: ${{ lower(replace(replace(replace(replace(parameters.name, '-', '_'), ' ', '_'), '&', 'And'), ',', '')) }}
+    variables:
+      - ${{ each var in parameters.variables }}:
+        - ${{ var }}
+    condition: ${{ parameters.condition }}
+    dependsOn:
+      - ${{ each dependsOn in parameters.dependsOn }}:
+        - ${{ dependsOn }}
+    displayName: ${{ parameters.name }}
+    jobs:
+      - ${{ each job in parameters.jobs }}:
+        - ${{ job }}
+    pool:
+      ${{ each attribute in parameters.pool }}:
+        ${{ attribute.key }}: ${{ attribute.value}}
