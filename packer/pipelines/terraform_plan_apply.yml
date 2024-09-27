@@ -61,7 +61,13 @@ stages:
               clean: all
             timeoutInMinutes: 30
             steps:
-              - checkout: self
+              # - checkout: self
+
+              - script: |
+                  echo "Listing contents of working directory"
+                  ls -la ${{ parameters.workingDirectory }}
+                displayName: "List working directory contents"
+
               - task: TerraformTaskV4@4
                 displayName: Initialize Terraform
                 inputs:
@@ -76,6 +82,7 @@ stages:
                 env:
                   ARM_USE_OIDC: true
                   ARM_USE_AZUREAD: true
+
               - task: TerraformTaskV4@4
                 name: terraformPlan${{ environment.name }}
                 displayName: Create Terraform Plan
@@ -93,6 +100,7 @@ stages:
                 env:
                   ARM_USE_OIDC: true
                   ARM_USE_AZUREAD: true
+
               - task: CopyFiles@2
                 displayName: Create plan artifact
                 inputs:
@@ -105,6 +113,7 @@ stages:
               - publish: $(Build.ArtifactStagingDirectory)
                 artifact: terraform-plan-${{ lower(environment.name) }}
                 displayName: Publish plan artifact
+
     - template: stages/wrapper_stage.yml
       parameters:
         name: Terraform Apply ${{ environment.name }}
