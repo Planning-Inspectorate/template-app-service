@@ -59,9 +59,9 @@ stages:
             displayName: Plan
             workspace:
               clean: all
-            checkout: self
             timeoutInMinutes: 30
             steps:
+              - checkout: self
               - task: TerraformTaskV4@4
                 displayName: Initialize Terraform
                 inputs:
