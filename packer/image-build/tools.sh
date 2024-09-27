@@ -89,17 +89,35 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # Install tfenv
 TFENV_DIR="/usr/local/tfenv"
-sudo mkdir -p "$TFENV_DIR"
-sudo chown "$USER:$USER" "$TFENV_DIR"
-sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
+if [ ! -d "$TFENV_DIR" ]; then
+    sudo mkdir -p "$TFENV_DIR"
+    sudo chown "$USER:$USER" "$TFENV_DIR"
+    sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
+else
+    echo "$TFENV_DIR already exists."
+fi
+
 export PATH="$PATH:$TFENV_DIR/bin"
-sudo ln -s "$TFENV_DIR/bin/*" /usr/local/bin
+
+# Create symbolic links only if they don't exist
+for file in "$TFENV_DIR/bin/"*; do
+    if [ ! -L "/usr/local/bin/$(basename "$file")" ]; then
+        sudo ln -s "$file" /usr/local/bin/
+    else
+        echo "Symbolic link for $(basename "$file") already exists."
+    fi
+done
 
 # Terraform
 for version in "${TERRAFORM_VERSIONS[@]}"; do
     tfenv install "$version"
 done
-sudo chown "$USER:$USER" "$TFENV_DIR/version"
+
+# Ensure the script has permission to write to the version file if it exists
+if [ -f "$TFENV_DIR/version" ]; then
+    sudo chown "$USER:$USER" "$TFENV_DIR/version"
+fi
+
 tfenv use "$DEFAULT_TERRAFORM_VERSION"
 export TERRAFORM_VERSION="$DEFAULT_TERRAFORM_VERSION"
 
@@ -109,6 +127,8 @@ terraform version
 
 # Add Terraform to PATH
 export PATH=$PATH:/usr/local/tfenv/versions/$DEFAULT_TERRAFORM_VERSION
+
+
 
 # Terragrunt
 sudo curl -sL "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" -o /usr/bin/terragrunt
