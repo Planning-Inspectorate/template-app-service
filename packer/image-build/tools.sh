@@ -99,8 +99,16 @@ sudo ln -s "$TFENV_DIR/bin/*" /usr/local/bin
 for version in "${TERRAFORM_VERSIONS[@]}"; do
     tfenv install "$version"
 done
+sudo chown "$USER:$USER" "$TFENV_DIR/version"
 tfenv use "$DEFAULT_TERRAFORM_VERSION"
 export TERRAFORM_VERSION="$DEFAULT_TERRAFORM_VERSION"
+
+# Verify Terraform installation
+echo "Verifying Terraform installation"
+terraform version
+
+# Add Terraform to PATH
+export PATH=$PATH:/usr/local/tfenv/versions/$DEFAULT_TERRAFORM_VERSION
 
 # Terragrunt
 sudo curl -sL "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" -o /usr/bin/terragrunt
