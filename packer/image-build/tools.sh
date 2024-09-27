@@ -128,8 +128,6 @@ terraform version
 # Add Terraform to PATH
 export PATH=$PATH:/usr/local/tfenv/versions/$DEFAULT_TERRAFORM_VERSION
 
-
-
 # Terragrunt
 sudo curl -sL "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" -o /usr/bin/terragrunt
 sudo chmod 755 /usr/bin/terragrunt
