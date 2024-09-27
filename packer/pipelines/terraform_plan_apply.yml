@@ -60,6 +60,7 @@ stages:
             workspace:
               clean: all
             timeoutInMinutes: 30
+            checkout: self
             steps:
               - task: TerraformTaskV4@4
                 displayName: Initialize Terraform
