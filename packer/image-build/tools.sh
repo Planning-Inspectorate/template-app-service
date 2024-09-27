@@ -89,35 +89,17 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # Install tfenv
 TFENV_DIR="/usr/local/tfenv"
-if [ ! -d "$TFENV_DIR" ]; then
-    sudo mkdir -p "$TFENV_DIR"
-    sudo chown "$USER:$USER" "$TFENV_DIR"
-    sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
-else
-    echo "$TFENV_DIR already exists."
-fi
-
+sudo mkdir -p "$TFENV_DIR"
+sudo chown "$USER:$USER" "$TFENV_DIR"
+sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
 export PATH="$PATH:$TFENV_DIR/bin"
-
-# Create symbolic links only if they don't exist
-for file in "$TFENV_DIR/bin/"*; do
-    if [ ! -L "/usr/local/bin/$(basename "$file")" ]; then
-        sudo ln -s "$file" /usr/local/bin/
-    else
-        echo "Symbolic link for $(basename "$file") already exists."
-    fi
-done
+sudo ln -s "$TFENV_DIR/bin/*" /usr/local/bin
 
 # Terraform
 for version in "${TERRAFORM_VERSIONS[@]}"; do
     tfenv install "$version"
 done
-
-# Ensure the script has permission to write to the version file if it exists
-if [ -f "$TFENV_DIR/version" ]; then
-    sudo chown "$USER:$USER" "$TFENV_DIR/version"
-fi
-
+sudo chown "$USER:$USER" "$TFENV_DIR/version"
 tfenv use "$DEFAULT_TERRAFORM_VERSION"
 export TERRAFORM_VERSION="$DEFAULT_TERRAFORM_VERSION"
 

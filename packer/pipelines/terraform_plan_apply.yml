@@ -67,6 +67,7 @@ stages:
               - script: |
                   echo "Listing contents of working directory"
                   ls -la ${{ parameters.workingDirectory }}
+                  sudo chown "$USER:$USER" "$TFENV_DIR/version"
                 displayName: "List working directory contents"
 
               - task: TerraformTaskV4@4
