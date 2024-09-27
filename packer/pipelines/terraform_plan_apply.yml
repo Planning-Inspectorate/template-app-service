@@ -62,19 +62,32 @@ stages:
             timeoutInMinutes: 30
             steps:
 
+              - checkout: self
+
               - script: |
                   echo "Listing contents of working directory"
                   ls -la ${{ parameters.workingDirectory }}
                 displayName: "List working directory contents"
 
               - script: |
-                  # Install and verify Terraform
                   TFENV_DIR="/usr/local/tfenv"
-                  sudo mkdir -p "$TFENV_DIR"
-                  sudo chown "$USER:$USER" "$TFENV_DIR"
-                  sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
+                  if [ ! -d "$TFENV_DIR" ]; then
+                      sudo mkdir -p "$TFENV_DIR"
+                      sudo chown "$USER:$USER" "$TFENV_DIR"
+                      sudo git clone https://github.com/tfutils/tfenv.git "$TFENV_DIR"
+                  else
+                      echo "$TFENV_DIR already exists."
+                  fi
+
                   export PATH="$PATH:$TFENV_DIR/bin"
-                  sudo ln -s "$TFENV_DIR/bin/*" /usr/local/bin
+
+                  for file in "$TFENV_DIR/bin/"*; do
+                      if [ ! -L "/usr/local/bin/$(basename "$file")" ]; then
+                          sudo ln -s "$file" /usr/local/bin/
+                      else
+                          echo "Symbolic link for $(basename "$file") already exists."
+                      fi
+                  done
 
                   TERRAFORM_VERSIONS=("1.9.1")
                   DEFAULT_TERRAFORM_VERSION="1.9.1"
@@ -82,6 +95,8 @@ stages:
                   for version in "${TERRAFORM_VERSIONS[@]}"; do
                       tfenv install "$version"
                   done
+
+                  sudo chown "$USER:$USER" "$TFENV_DIR/version"
                   tfenv use "$DEFAULT_TERRAFORM_VERSION"
                   export TERRAFORM_VERSION="$DEFAULT_TERRAFORM_VERSION"
 
@@ -89,6 +104,7 @@ stages:
                   terraform version
 
                   export PATH=$PATH:/usr/local/tfenv/versions/$DEFAULT_TERRAFORM_VERSION
+                displayName: "Install and Verify Terraform"
 
               - task: TerraformTaskV4@4
                 displayName: Initialize Terraform
