@@ -47,7 +47,7 @@ variables:
 
 stages:
   - ${{ each environment in parameters[variables.environmentsSource] }}:
-    - template: ../stages/wrapper_stage.yml
+    - template: stages/wrapper_stage.yml
       parameters:
         name: Terraform Plan ${{ environment.name }}
         pool: ${{ parameters.pool }}
@@ -104,7 +104,7 @@ stages:
               - publish: $(Build.ArtifactStagingDirectory)
                 artifact: terraform-plan-${{ lower(environment.name) }}
                 displayName: Publish plan artifact
-    - template: ../stages/wrapper_stage.yml
+    - template: stages/wrapper_stage.yml
       parameters:
         name: Terraform Apply ${{ environment.name }}
         pool: ${{ parameters.pool }}
