@@ -62,6 +62,13 @@ stages:
             timeoutInMinutes: 30
             steps:
 
+              - checkout: self
+
+              - script: |
+                  echo "Listing contents of working directory"
+                  ls -la ${{ parameters.workingDirectory }}
+                displayName: "List working directory contents"
+
               - task: TerraformTaskV4@4
                 displayName: Initialize Terraform
                 inputs:
