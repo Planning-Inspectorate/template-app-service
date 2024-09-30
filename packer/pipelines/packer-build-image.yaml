@@ -23,10 +23,10 @@ jobs:
       - template: steps/azure_auth.yml@templates
         parameters:
           subscriptionId: $(ODT_DEV_SUBSCRIPTION_ID)
-      - script: |
-          DEFAULT_TERRAFORM_VERSION=$(grep 'DEFAULT_TERRAFORM_VERSION=' $(Build.Repository.LocalPath)/packer/image-build/tools.sh | cut -d '"' -f 2)
-          echo "##vso[task.setvariable variable=TERRAFORM_VERSION]$DEFAULT_TERRAFORM_VERSION"
-        displayName: 'Extract DEFAULT_TERRAFORM_VERSION'
+      # - script: |
+      #     DEFAULT_TERRAFORM_VERSION=$(grep 'DEFAULT_TERRAFORM_VERSION=' $(Build.Repository.LocalPath)/packer/image-build/tools.sh | cut -d '"' -f 2)
+      #     echo "##vso[task.setvariable variable=TERRAFORM_VERSION]$DEFAULT_TERRAFORM_VERSION"
+      #   displayName: 'Extract DEFAULT_TERRAFORM_VERSION'
       - script: |
           packer init .
         displayName: Packer init
