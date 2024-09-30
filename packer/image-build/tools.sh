@@ -98,7 +98,7 @@ nvm install 16
 nvm install 15
 nvm install 14
 
-nvm alias default 20
+nvm alias default 16
 nvm use default
 
 # Azure CLI
