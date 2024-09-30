@@ -26,7 +26,7 @@ build {
 
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu20-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "azure-agents-${formatdate("YYYYMMDDhhmmss", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
