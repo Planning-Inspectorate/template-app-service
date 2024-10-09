@@ -22,7 +22,7 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: 1514f3d5d373a0d9d6467faf66100d7e60d1f37c
+      ref: b784e2abf41f170b1ff964d6ecb7fd4c7fe20f39
   pipelines:
     - pipeline: build
       source: Build
@@ -30,10 +30,7 @@ resources:
         branches:
           include:
             - main
-        paths:
-          exclude:
-          - infrastructure
-          - packer
+
 
 extends:
   template: stages/wrapper_cd.yml@templates
