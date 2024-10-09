@@ -22,7 +22,7 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: 1514f3d5d373a0d9d6467faf66100d7e60d1f37c
+      ref: 99a2d1f83627e0cf9452bb9d690bcfdcfb8e989f
   pipelines:
     - pipeline: build
       source: Build
