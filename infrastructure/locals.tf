@@ -24,6 +24,32 @@ locals {
 
   secrets = []
 
+  #Frontdoor resource
+
+  template_primary_mapping = {
+    url      = var.template_primary_app_service_url,
+    priority = 1
+  }
+
+  template_secondary_mapping = {
+    url      = var.template_secondary_app_service_url,
+    priority = 0
+  }
+
+  template_frontend = {
+    frontend_endpoint = var.template_public_url #https://template-service-dev.planninginspectorate.gov.uk/
+    app_service_urls = local.template_secondary_mapping.url != "" && var.feature_front_door_failover_enaled ? [
+      local.template_primary_mapping,
+      local.template_secondary_mapping] : [
+      local.template_primary_mapping
+    ]
+    infer_backend_host_header = false
+    name                      = "TemplateService"
+    frontend_name             = "TemplateService"
+    patterns_to_match         = ["/*"]
+    ssl_certificate_name      = var.template_ssl_certificate_name
+  }
+
   # tflint-ignore: terraform_unused_declarations
   key_vault_refs = merge(
     {

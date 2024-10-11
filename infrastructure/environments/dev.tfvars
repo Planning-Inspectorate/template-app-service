@@ -48,3 +48,6 @@ vnet_config = {
 }
 
 web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
+
+#FrontDoor
+template_primary_app_service_url = "https://template-service-dev.planninginspectorate.gov.uk/"

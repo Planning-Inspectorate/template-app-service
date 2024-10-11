@@ -33,8 +33,8 @@ resource "azurerm_frontdoor" "common" {
 
   backend_pool {
     name                = "Default"
-    load_balancing_name = "Default"
-    health_probe_name   = "Http"
+    load_balancing_name = "Default" #refering to above line number 7
+    health_probe_name   = "Http"    #refering to aboveline number 14
 
     backend {
       enabled     = true
@@ -53,7 +53,6 @@ resource "azurerm_frontdoor" "common" {
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["pins-fd-${local.service_name}-${local.resource_suffix}"]
-
     forwarding_configuration {
       backend_pool_name      = "Default"
       cache_enabled          = false
@@ -62,6 +61,13 @@ resource "azurerm_frontdoor" "common" {
       forwarding_protocol    = "MatchRequest"
     }
   }
+
+  frontend_endpoint {
+    name                                    = local.template_frontend.frontend_name
+    host_name                               = local.template_frontend.frontend_endpoint
+    web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.default.id
+  }
+
 
 }
 # --------------------------------FRONT DOOR STANDARD CODE BELOW---------------------------------------------------------------
