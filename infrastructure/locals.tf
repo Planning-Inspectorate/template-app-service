@@ -37,7 +37,7 @@ locals {
   }
 
   template_frontend = {
-    frontend_endpoint = var.template_public_url #https://template-service-dev.planninginspectorate.gov.uk/
+    frontend_endpoint = var.template_public_url
     app_service_urls = local.template_secondary_mapping.url != "" && var.feature_front_door_failover_enaled ? [
       local.template_primary_mapping,
       local.template_secondary_mapping] : [
