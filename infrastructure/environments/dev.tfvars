@@ -50,9 +50,9 @@ vnet_config = {
 web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
 
 #FrontDoor
-template_primary_app_service_url   = "https://template-service-dev.planninginspectorate.gov.uk/"
-template_secondary_app_service_url = "https://template-service-dev.planninginspectorate.gov.uk/"
-template_public_url                = "https://template-service-dev.planninginspectorate.gov.uk/"
+template_primary_app_service_url      = "https://template-service-dev.planninginspectorate.gov.uk/"
+template_secondary_app_service_url    = "https://template-service-dev.planninginspectorate.gov.uk/"
+template_public_url                   = "https://template-service-dev.planninginspectorate.gov.uk/"
+front_door_waf_template_redirect_path = "/error/firewall-error"
 # template_url                          = "https://template-service-dev.planninginspectorate.gov.uk/"
-# front_door_waf_template_redirect_path = "/error/firewall-error"
 

@@ -55,10 +55,10 @@ variable "front_door_waf_mode" {
 }
 
 # #frontdoor
-# variable "front_door_waf_template_redirect_path" {
-#   description = "The URL to redirect a user to if a rule's action is Redirect"
-#   type        = string
-# }
+variable "front_door_waf_template_redirect_path" {
+  description = "The URL to redirect a user to if a rule's action is Redirect"
+  type        = string
+}
 
 variable "sql_config" {
   description = "Config for SQL Server and DB"
