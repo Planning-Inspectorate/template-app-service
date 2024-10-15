@@ -54,11 +54,11 @@ variable "front_door_waf_mode" {
   default     = "Detection"
 }
 
-#frontdoor
-variable "front_door_waf_template_redirect_path" {
-  description = "The URL to redirect a user to if a rule's action is Redirect"
-  type        = string
-}
+# #frontdoor
+# variable "front_door_waf_template_redirect_path" {
+#   description = "The URL to redirect a user to if a rule's action is Redirect"
+#   type        = string
+# }
 
 variable "sql_config" {
   description = "Config for SQL Server and DB"
@@ -89,13 +89,13 @@ variable "tags" {
 
 #frontdoor
 variable "template_primary_app_service_url" {
-  description = "The primary App Service URL for the Applications Service"
+  description = "The primary App Service URL for the Template Service"
   type        = string
 }
 
 #frontdoor
 variable "template_secondary_app_service_url" {
-  description = "The secondary App Service URL for the Applications Service"
+  description = "The secondary App Service URL for the Template Service"
   type        = string
   default     = ""
 }
@@ -109,7 +109,7 @@ variable "template_ssl_certificate_name" {
 
 #frontdoor
 variable "template_public_url" {
-  description = "The public URL for the Applications Service frontend web app"
+  description = "The public URL for the Template Service frontend web app"
   type        = string
 }
 

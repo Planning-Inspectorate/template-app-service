@@ -26,46 +26,45 @@ resource "azurerm_frontdoor" "common" {
   }
 
   frontend_endpoint {
-    name                                    = "pins-fd-${local.service_name}-${local.resource_suffix}"
-    host_name                               = "pins-fd-${local.service_name}-${local.resource_suffix}.azurefd.net"
-    web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.default.id
+    name                                    = local.template_frontend.frontend_name
+    host_name                               = local.template_frontend.frontend_endpoint
+    web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.template_frontend.id
   }
 
   backend_pool {
-    name                = "Default"
-    load_balancing_name = "Default" #refering to above line number 7
-    health_probe_name   = "Http"    #refering to aboveline number 14
+    name                = local.template_frontend.name
+    load_balancing_name = "Default"
+    health_probe_name   = "Http"
 
-    backend {
-      enabled     = true
-      address     = "www.gov.uk"
-      host_header = "www.gov.uk"
-      http_port   = 80
-      https_port  = 443
-      priority    = 5
-      weight      = 100
+    dynamic "backend" {
+      for_each = local.template_frontend.app_service_urls
+      iterator = app_service_url
+
+      content {
+        enabled     = true
+        address     = app_service_url.value["url"]
+        host_header = local.template_frontend.infer_backend_host_header ? "" : app_service_url.value["url"]
+        http_port   = 80
+        https_port  = 443
+        priority    = app_service_url.value["priority"]
+        weight      = 100
+      }
     }
   }
 
   routing_rule {
     enabled            = true
-    name               = "Default"
+    name               = local.template_frontend.name
     accepted_protocols = ["Http", "Https"]
-    patterns_to_match  = ["/*"]
-    frontend_endpoints = ["pins-fd-${local.service_name}-${local.resource_suffix}"]
+    patterns_to_match  = local.template_frontend.patterns_to_match
+    frontend_endpoints = [local.template_frontend.frontend_name]
+
     forwarding_configuration {
-      backend_pool_name      = "Default"
+      backend_pool_name      = local.template_frontend.name
       cache_enabled          = false
       cache_query_parameters = []
-      custom_forwarding_path = "/government/organisations/planning-inspectorate"
       forwarding_protocol    = "MatchRequest"
     }
-  }
-
-  frontend_endpoint {
-    name                                    = local.template_frontend.frontend_name
-    host_name                               = local.template_frontend.frontend_endpoint
-    web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.default.id
   }
 
 
