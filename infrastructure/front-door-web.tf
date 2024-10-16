@@ -42,7 +42,7 @@ resource "azurerm_frontdoor" "common" {
 
       content {
         enabled     = true
-        address     = app_service_url.value["url"]
+        address     = var.web_app_domain
         host_header = local.template_frontend.infer_backend_host_header ? "" : app_service_url.value["url"]
         http_port   = 80
         https_port  = 443
