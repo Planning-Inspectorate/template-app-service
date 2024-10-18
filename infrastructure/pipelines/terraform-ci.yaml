@@ -2,13 +2,13 @@ trigger:
   branches:
     include:
       - main
-      # trigger for merge queue branches
       - gh-readonly-queue/*
   paths:
     include:
-    - infrastructure
+      - infrastructure
     exclude:
-    
+      - packer
+      - app
 
 pr:
   branches:
