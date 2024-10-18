@@ -45,7 +45,7 @@ module "template_app_web" {
   }
 
   providers = {
-    azurerm         = azurerm
+    azurerm = azurerm
   }
 }
 
