@@ -11,6 +11,9 @@ trigger:
   paths:
     include:
       - packer
+    exclude:
+      - app
+      - infrastructure
 
 resources:
   pipelines:
