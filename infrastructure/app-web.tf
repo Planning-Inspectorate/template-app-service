@@ -43,6 +43,10 @@ module "template_app_web" {
     LOG_LEVEL_FILE   = var.apps_config.logging.level_file
     LOG_LEVEL_STDOUT = var.apps_config.logging.level_stdout
   }
+
+  providers = {
+    azurerm         = azurerm
+  }
 }
 
 # ## RBAC for secrets
