@@ -87,18 +87,18 @@ variable "tags" {
   default     = {}
 }
 
-#frontdoor
-variable "template_primary_app_service_url" {
-  description = "The primary App Service URL for the Template Service"
-  type        = string
-}
+# #frontdoor
+# variable "template_primary_app_service_url" {
+#   description = "The primary App Service URL for the Template Service"
+#   type        = string
+# }
 
-#frontdoor
-variable "template_secondary_app_service_url" {
-  description = "The secondary App Service URL for the Template Service"
-  type        = string
-  default     = ""
-}
+# #frontdoor
+# variable "template_secondary_app_service_url" {
+#   description = "The secondary App Service URL for the Template Service"
+#   type        = string
+#   default     = ""
+# }
 
 #frontdoor
 variable "template_ssl_certificate_name" {

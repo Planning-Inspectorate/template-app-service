@@ -27,12 +27,12 @@ locals {
   #Frontdoor resource
 
   template_primary_mapping = {
-    url      = var.template_primary_app_service_url,
+    url      = module.template_app_web.default_site_hostname,
     priority = 1
   }
 
   template_secondary_mapping = {
-    url      = var.template_secondary_app_service_url,
+    url      = module.template_app_web.default_site_hostname,
     priority = 0
   }
 
