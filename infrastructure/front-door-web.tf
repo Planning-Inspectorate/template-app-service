@@ -26,8 +26,8 @@ resource "azurerm_frontdoor" "common" {
   }
 
   frontend_endpoint {
-    name                                    = local.template_frontend.frontend_name
-    host_name                               = local.template_frontend.frontend_endpoint
+    name                                    = "pins-fd-${local.service_name}-${local.resource_suffix}"
+    host_name                               = "pins-fd-${local.service_name}-${local.resource_suffix}.azurefd.net"
     web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.template_frontend.id
   }
 
