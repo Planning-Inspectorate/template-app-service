@@ -57,7 +57,7 @@ resource "azurerm_frontdoor" "common" {
     name               = local.template_frontend.name
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = local.template_frontend.patterns_to_match
-    frontend_endpoints = [local.template_frontend.frontend_name]
+    frontend_endpoints = ["pins-fd-${local.service_name}-${local.resource_suffix}"]
 
     forwarding_configuration {
       backend_pool_name      = local.template_frontend.name
