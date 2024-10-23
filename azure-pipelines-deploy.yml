@@ -10,7 +10,7 @@ pr:
 trigger:
   branches:
     include:
-      - app
+      - main
   paths:
     exclude:
       - infrastructure
