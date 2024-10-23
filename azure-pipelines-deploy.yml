@@ -10,11 +10,13 @@ pr:
 trigger:
   branches:
     include:
-      - main
+      - app/*
+    exclude:
+      - '*'
   paths:
     exclude:
-      - infrastructure
-      - packer
+      - infrastructure/*
+      - packer/*
 
 resources:
   repositories:
