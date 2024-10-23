@@ -36,6 +36,7 @@ locals {
     priority = 0
   }
 
+  # tflint-ignore: terraform_unused_declarations
   template_frontend = {
     frontend_endpoint = var.template_public_url
     app_service_urls = local.template_secondary_mapping.url != "" && var.feature_front_door_failover_enaled ? [
