@@ -74,26 +74,6 @@ resource "azurerm_frontdoor" "common" {
     host_name                               = local.template_frontend.frontend_endpoint
     web_application_firewall_policy_link_id = azurerm_frontdoor_firewall_policy.template_frontend.id
   }
-  # backend_pool {
-  #   name                = local.template_frontend.frontend_name
-  #   load_balancing_name = "Default"
-  #   health_probe_name   = "Http"
-
-  #   dynamic "backend" {
-  #     for_each = local.template_frontend.app_service_urls
-  #     iterator = app_service_url
-
-  #     content {
-  #       enabled     = true
-  #       address     = app_service_url.value["url"]
-  #       host_header = local.template_frontend.infer_backend_host_header ? "" : app_service_url.value["url"]
-  #       http_port   = 80
-  #       https_port  = 443
-  #       priority    = app_service_url.value["priority"]
-  #       weight      = 100
-  #     }
-  #   }
-  # }
   routing_rule {
     enabled            = true
     name               = local.template_frontend.name
@@ -110,7 +90,15 @@ resource "azurerm_frontdoor" "common" {
   }
 
   tags = local.tags
+}
+#Frontdoor https configuration
+resource "azurerm_frontdoor_custom_https_configuration" "template_https_0" {
+  frontend_endpoint_id              = azurerm_frontdoor.common.frontend_endpoints[local.template_frontend.frontend_name]
+  custom_https_provisioning_enabled = true
 
+  custom_https_configuration {
+    certificate_source = "FrontDoor"
+  }
 }
 # --------------------------------FRONT DOOR STANDARD CODE BELOW---------------------------------------------------------------
 
