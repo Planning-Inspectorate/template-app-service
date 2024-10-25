@@ -145,3 +145,8 @@ variable "web_app_domain" {
   description = "The domain for the web app"
   type        = string
 }
+
+# variable "web_app_domain_premium" {
+#   description = "The domain for the web app"
+#   type        = string
+# }

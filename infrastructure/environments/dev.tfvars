@@ -49,6 +49,8 @@ vnet_config = {
 
 web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
 
+web_app_domain_premium = "afdverify.template-service-dev.planninginspectorate.gov.uk"
+
 #FrontDoor
 
 template_public_url                   = "template-service-dev.planninginspectorate.gov.uk"
