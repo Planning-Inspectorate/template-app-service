@@ -46,4 +46,4 @@ repos:
       #     - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       # - id: terraform_trivy
       #   stages: [pre-commit]
-      # - id: terraform_checkov
+      #  - id: terraform_checkov
