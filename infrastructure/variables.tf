@@ -43,6 +43,7 @@ variable "environment" {
 variable "health_check_path" {
   description = "The path for the health check"
   type        = string
+  default     = "/health"
 }
 
 variable "health_check_eviction_time_in_min" {
