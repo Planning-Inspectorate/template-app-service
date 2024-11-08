@@ -8,13 +8,6 @@ resource "azurerm_cdn_frontdoor_profile" "web" {
   tags = local.tags
 }
 
-resource "azurerm_cdn_frontdoor_endpoint" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-
-  tags = local.tags
-}
-
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
@@ -48,6 +41,13 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   https_port         = 443
   priority           = 1
   weight             = 1000
+}
+
+resource "azurerm_cdn_frontdoor_endpoint" "web" {
+  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+
+  tags = local.tags
 }
 
 # resource "azurerm_cdn_frontdoor_custom_domain" "web" {
