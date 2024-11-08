@@ -23,8 +23,8 @@ common_config = {
 
 environment = "dev"
 
-health_check_path                 = "/health"
-health_check_eviction_time_in_min = 10
+# health_check_path                 = "/health"
+# health_check_eviction_time_in_min = 10
 
 sql_config = {
   admin = {
