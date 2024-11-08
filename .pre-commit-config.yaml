@@ -32,6 +32,12 @@ repos:
       #   args:
       #     - --args=--config=.config/terraform-docs.yml
       #     - --hook-config=--use-standard-markers=true
+      #   exclude: "^modules|^example|^tools"
+      # - id: terraform_docs
+      #   stages: [pre-commit]
+      #   args:
+      #     - --args=--config=.config/terraform-docs.yml
+      #     - --hook-config=--use-standard-markers=true
         exclude: "^modules|^example|^tools"
       - id: terraform_validate
         stages: [pre-commit]
@@ -39,6 +45,14 @@ repos:
         args:
           - --tf-init-args=-upgrade
           - --hook-config=--retry-once-with-cleanup=true
+      # - id: terraform_tflint
+      #   stages: [pre-commit]
+      #   exclude: ^examples
+      #   args:
+      #     - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+      # - id: terraform_trivy
+      #   stages: [pre-commit]
+      # - id: terraform_checkov
       # - id: terraform_tflint
       #   stages: [pre-commit]
       #   exclude: ^examples
