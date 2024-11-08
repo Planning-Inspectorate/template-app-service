@@ -1,14 +1,9 @@
+# --------------------------------FRONT DOOR PREMIUM CODE BELOW---------------------------------------------------------------
+
 resource "azurerm_cdn_frontdoor_profile" "web" {
   name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   resource_group_name = azurerm_resource_group.primary.name
-  sku_name            = "Standard_AzureFrontDoor"
-
-  tags = local.tags
-}
-
-resource "azurerm_cdn_frontdoor_endpoint" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  sku_name            = "Premium_AzureFrontDoor"
 
   tags = local.tags
 }
@@ -16,6 +11,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "web" {
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+
   session_affinity_enabled = true
 
   health_probe {
@@ -47,16 +43,23 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   weight             = 1000
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain" "web" {
+resource "azurerm_cdn_frontdoor_endpoint" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-  host_name                = var.web_app_domain
 
-  tls {
-    certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
-  }
+  tags = local.tags
 }
+
+# resource "azurerm_cdn_frontdoor_custom_domain" "web" {
+#   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+#   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+#   host_name                = var.web_app_domain_premium
+
+#   tls {
+#     certificate_type    = "ManagedCertificate"
+#     minimum_tls_version = "TLS12"
+#   }
+# }
 
 resource "azurerm_cdn_frontdoor_route" "web" {
   name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
@@ -70,20 +73,20 @@ resource "azurerm_cdn_frontdoor_route" "web" {
   supported_protocols    = ["Http", "Https"]
 
 
-  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.web.id]
-  link_to_default_domain          = false
+  # cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.web.id]
+  # link_to_default_domain          = false
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
-  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
-  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
-}
+# resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
+#   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
+#   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
+# }
 
 # WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
   resource_group_name               = azurerm_resource_group.primary.name
-  sku_name                          = "Standard_AzureFrontDoor"
+  sku_name                          = "Premium_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
@@ -115,30 +118,30 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
     }
   }
 
-  # managed_rule {
-  #   type    = "Microsoft_DefaultRuleSet"
-  #   version = "2.1"
-  #   action  = "Log"
-  # }
-}
-
-resource "azurerm_cdn_frontdoor_security_policy" "web" {
-  name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-
-  security_policies {
-    firewall {
-      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
-
-      association {
-        domain {
-          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
-        }
-        patterns_to_match = ["/*"]
-      }
-    }
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Log"
   }
 }
+
+# resource "azurerm_cdn_frontdoor_security_policy" "web" {
+#   name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
+#   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+
+#   security_policies {
+#     firewall {
+#       cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
+
+#       association {
+#         domain {
+#           cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
+#         }
+#         patterns_to_match = ["/*"]
+#       }
+#     }
+#   }
+# }
 
 # moinitoring
 resource "azurerm_monitor_diagnostic_setting" "web_front_door" {
