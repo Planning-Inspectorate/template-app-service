@@ -40,6 +40,16 @@ variable "environment" {
   type        = string
 }
 
+variable "health_check_path" {
+  description = "The path for the health check"
+  type        = string
+}
+
+variable "health_check_eviction_time_in_min" {
+  description = "The eviction time in minutes for the health check"
+  type        = number
+}
+
 variable "sql_config" {
   description = "Config for SQL Server and DB"
   type = object({
@@ -96,6 +106,11 @@ variable "vnet_config" {
 }
 
 variable "web_app_domain" {
+  description = "The domain for the web app"
+  type        = string
+}
+
+variable "web_app_domain_premium" {
   description = "The domain for the web app"
   type        = string
 }
