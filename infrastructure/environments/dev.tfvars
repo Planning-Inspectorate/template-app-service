@@ -23,6 +23,8 @@ common_config = {
 
 environment = "dev"
 
+health_check_path = "/health"
+
 sql_config = {
   admin = {
     login_username = "pins-odt-sql-dev-template"
