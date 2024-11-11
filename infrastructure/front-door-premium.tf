@@ -50,16 +50,16 @@ resource "azurerm_cdn_frontdoor_endpoint" "web" {
   tags = local.tags
 }
 
-# resource "azurerm_cdn_frontdoor_custom_domain" "web" {
-#   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-#   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-#   host_name                = var.web_app_domain_premium
+resource "azurerm_cdn_frontdoor_custom_domain" "web" {
+  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  host_name                = var.web_app_domain
 
-#   tls {
-#     certificate_type    = "ManagedCertificate"
-#     minimum_tls_version = "TLS12"
-#   }
-# }
+  tls {
+    certificate_type    = "ManagedCertificate"
+    minimum_tls_version = "TLS12"
+  }
+}
 
 resource "azurerm_cdn_frontdoor_route" "web" {
   name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
@@ -73,14 +73,14 @@ resource "azurerm_cdn_frontdoor_route" "web" {
   supported_protocols    = ["Http", "Https"]
 
 
-  # cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.web.id]
-  # link_to_default_domain          = false
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.web.id]
+  link_to_default_domain          = false
 }
 
-# resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
-#   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
-#   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
-# }
+resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
+}
 
 # WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
@@ -125,23 +125,23 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   }
 }
 
-# resource "azurerm_cdn_frontdoor_security_policy" "web" {
-#   name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
-#   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+resource "azurerm_cdn_frontdoor_security_policy" "web" {
+  name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
 
-#   security_policies {
-#     firewall {
-#       cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
 
-#       association {
-#         domain {
-#           cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
-#         }
-#         patterns_to_match = ["/*"]
-#       }
-#     }
-#   }
-# }
+      association {
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
+        }
+        patterns_to_match = ["/*"]
+      }
+    }
+  }
+}
 
 # moinitoring
 resource "azurerm_monitor_diagnostic_setting" "web_front_door" {
