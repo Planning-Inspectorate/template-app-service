@@ -1,16 +1,16 @@
 # --------------------------------FRONT DOOR PREMIUM CODE BELOW---------------------------------------------------------------
 
-resource "azurerm_cdn_frontdoor_profile" "web" {
-  name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  resource_group_name = azurerm_resource_group.primary.name
-  sku_name            = "Premium_AzureFrontDoor"
+# resource "azurerm_cdn_frontdoor_profile" "web" {
+#   name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+#   resource_group_name = azurerm_resource_group.primary.name
+#   sku_name            = "Premium_AzureFrontDoor"
 
-  tags = local.tags
-}
+#   tags = local.tags
+# }
 
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
 
   session_affinity_enabled = true
 
@@ -43,16 +43,16 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   weight             = 1000
 }
 
-resource "azurerm_cdn_frontdoor_endpoint" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+# resource "azurerm_cdn_frontdoor_endpoint" "web" {
+#   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+#   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
 
-  tags = local.tags
-}
+#   tags = local.tags
+# }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
   host_name                = var.web_app_domain
 
   tls {
@@ -63,7 +63,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "web" {
 
 resource "azurerm_cdn_frontdoor_route" "web" {
   name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.web.id
+  cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.web.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.web.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.web.id]
 
@@ -86,7 +86,7 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
   resource_group_name               = azurerm_resource_group.primary.name
-  sku_name                          = "Premium_AzureFrontDoor"
+  sku_name                          = "Standard_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
@@ -118,16 +118,16 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
     }
   }
 
-  managed_rule {
-    type    = "Microsoft_DefaultRuleSet"
-    version = "2.1"
-    action  = "Log"
-  }
+  # managed_rule {
+  #   type    = "Microsoft_DefaultRuleSet"
+  #   version = "2.1"
+  #   action  = "Log"
+  # }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "web" {
   name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
 
   security_policies {
     firewall {
@@ -146,7 +146,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "web" {
 # moinitoring
 resource "azurerm_monitor_diagnostic_setting" "web_front_door" {
   name                       = "${local.org}-fd-mds-${local.service_name}-web-${var.environment}"
-  target_resource_id         = azurerm_cdn_frontdoor_profile.web.id
+  target_resource_id         = data.azurerm_cdn_frontdoor_profile.web.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
 
   enabled_log {
