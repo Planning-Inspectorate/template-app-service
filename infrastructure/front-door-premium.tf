@@ -93,8 +93,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
-
-  tags = local.tags
+  provider                          = azurerm.tooling
+  tags                              = local.tags
 
   custom_rule {
     name                           = "RateLimitHttpRequest"
