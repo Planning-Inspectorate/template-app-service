@@ -63,4 +63,3 @@ front_door_waf_template_redirect_path = "/error/firewall-error"
 # template_primary_app_service_url      = "template-service-dev.planninginspectorate.gov.uk"
 # template_secondary_app_service_url    = "template-service-dev.planninginspectorate.gov.uk"
 # template_url                          = "https://template-service-dev.planninginspectorate.gov.uk/"
-

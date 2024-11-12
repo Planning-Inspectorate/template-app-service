@@ -40,6 +40,12 @@ variable "environment" {
   type        = string
 }
 
+#frontdoor
+variable "feature_front_door_failover_enaled" {
+  description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
+  type        = bool
+  default     = false
+}
 
 variable "health_check_path" {
   description = "The path for the health check"
