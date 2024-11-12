@@ -40,6 +40,13 @@ variable "environment" {
   type        = string
 }
 
+#frontdoor
+variable "feature_front_door_failover_enaled" {
+  description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
+  type        = bool
+  default     = false
+}
+
 variable "health_check_path" {
   description = "The path for the health check"
   type        = string
@@ -50,26 +57,6 @@ variable "health_check_eviction_time_in_min" {
   description = "The eviction time in minutes for the health check"
   type        = number
   default     = 10
-}
-
-#frontdoor
-variable "feature_front_door_failover_enaled" {
-  description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
-  type        = bool
-  default     = false
-}
-
-#frontfoor
-variable "front_door_waf_mode" {
-  description = "Indicates if the Web Application Firewall should be in Detection or Prevention mode"
-  type        = string
-  default     = "Detection"
-}
-
-# #frontdoor
-variable "front_door_waf_template_redirect_path" {
-  description = "The URL to redirect a user to if a rule's action is Redirect"
-  type        = string
 }
 
 variable "sql_config" {
