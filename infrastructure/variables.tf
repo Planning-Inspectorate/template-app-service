@@ -51,6 +51,7 @@ variable "health_check_eviction_time_in_min" {
   description = "The eviction time in minutes for the health check"
   type        = number
   default     = 10
+}
 
 variable "sql_config" {
   description = "Config for SQL Server and DB"
