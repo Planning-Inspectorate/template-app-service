@@ -131,7 +131,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
 resource "azurerm_cdn_frontdoor_security_policy" "web" {
   name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
-
+  provider                 = azurerm.tooling
   security_policies {
     firewall {
       cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
@@ -151,6 +151,7 @@ resource "azurerm_monitor_diagnostic_setting" "web_front_door" {
   name                       = "${local.org}-fd-mds-${local.service_name}-web-${var.environment}"
   target_resource_id         = data.azurerm_cdn_frontdoor_profile.web.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  provider                   = azurerm.tooling
 
   enabled_log {
     category = "FrontdoorWebApplicationFirewallLog"
