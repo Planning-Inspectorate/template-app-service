@@ -88,8 +88,8 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
 # WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
-  resource_group_name               = azurerm_resource_group.primary.name
-  sku_name                          = "Standard_AzureFrontDoor"
+  resource_group_name               = var.tooling_config.frontdoor_rg
+  sku_name                          = "Premium_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
