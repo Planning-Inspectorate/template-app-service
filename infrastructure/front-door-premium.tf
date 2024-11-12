@@ -1,14 +1,9 @@
+# --------------------------------FRONT DOOR PREMIUM CODE BELOW---------------------------------------------------------------
+
 resource "azurerm_cdn_frontdoor_profile" "web" {
   name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   resource_group_name = azurerm_resource_group.primary.name
-  sku_name            = "Standard_AzureFrontDoor"
-
-  tags = local.tags
-}
-
-resource "azurerm_cdn_frontdoor_endpoint" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  sku_name            = "Premium_AzureFrontDoor"
 
   tags = local.tags
 }
@@ -16,6 +11,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "web" {
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+
   session_affinity_enabled = true
 
   health_probe {
@@ -45,6 +41,13 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   https_port         = 443
   priority           = 1
   weight             = 1000
+}
+
+resource "azurerm_cdn_frontdoor_endpoint" "web" {
+  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+
+  tags = local.tags
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "web" {
@@ -83,7 +86,7 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
   resource_group_name               = azurerm_resource_group.primary.name
-  sku_name                          = "Standard_AzureFrontDoor"
+  sku_name                          = "Premium_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
@@ -115,11 +118,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
     }
   }
 
-  # managed_rule {
-  #   type    = "Microsoft_DefaultRuleSet"
-  #   version = "2.1"
-  #   action  = "Log"
-  # }
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Log"
+  }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "web" {

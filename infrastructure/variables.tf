@@ -40,6 +40,7 @@ variable "environment" {
   type        = string
 }
 
+
 variable "health_check_path" {
   description = "The path for the health check"
   type        = string
@@ -50,7 +51,6 @@ variable "health_check_eviction_time_in_min" {
   description = "The eviction time in minutes for the health check"
   type        = number
   default     = 10
-}
 
 variable "sql_config" {
   description = "Config for SQL Server and DB"
@@ -77,6 +77,32 @@ variable "tags" {
   description = "A collection of tags to assign to taggable resources"
   type        = map(string)
   default     = {}
+}
+
+# #frontdoor
+# variable "template_primary_app_service_url" {
+#   description = "The primary App Service URL for the Template Service"
+#   type        = string
+# }
+
+# #frontdoor
+# variable "template_secondary_app_service_url" {
+#   description = "The secondary App Service URL for the Template Service"
+#   type        = string
+#   default     = ""
+# }
+
+#frontdoor
+variable "template_ssl_certificate_name" {
+  description = "The SSL certificate name in the environment Key Vault for the applications service"
+  type        = string
+  default     = "unused"
+}
+
+#frontdoor
+variable "template_public_url" {
+  description = "The public URL for the Template Service frontend web app"
+  type        = string
 }
 
 # variable "tag_owner_michael" {
@@ -111,3 +137,8 @@ variable "web_app_domain" {
   description = "The domain for the web app"
   type        = string
 }
+
+# variable "web_app_domain_premium" {
+#   description = "The domain for the web app"
+#   type        = string
+# }
