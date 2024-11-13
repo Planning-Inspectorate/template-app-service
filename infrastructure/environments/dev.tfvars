@@ -52,14 +52,6 @@ vnet_config = {
 
 web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
 
-web_app_domain_premium = "afdverify.template-service-dev.planninginspectorate.gov.uk"
-
-#FrontDoor
-
-template_public_url                   = "template-service-dev.planninginspectorate.gov.uk"
-front_door_waf_template_redirect_path = "/error/firewall-error"
-# template_primary_app_service_url = output.template_primary_mapping-url
-# template_secondary_app_service_url= = output.template_secondary_mapping-url.value
-# template_primary_app_service_url      = "template-service-dev.planninginspectorate.gov.uk"
-# template_secondary_app_service_url    = "template-service-dev.planninginspectorate.gov.uk"
-# template_url                          = "https://template-service-dev.planninginspectorate.gov.uk/"
+# #FrontDoor Classic
+# template_public_url                   = "template-service-dev.planninginspectorate.gov.uk"
+# front_door_waf_template_redirect_path = "/error/firewall-error"

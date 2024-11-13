@@ -40,12 +40,25 @@ variable "environment" {
   type        = string
 }
 
-#frontdoor
-variable "feature_front_door_failover_enaled" {
-  description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
-  type        = bool
-  default     = false
-}
+# #frontdoor Classic
+# variable "feature_front_door_failover_enaled" {
+#   description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
+#   type        = bool
+#   default     = false
+# }
+
+# #frontfoor Classic
+# variable "front_door_waf_mode" {
+#   description = "Indicates if the Web Application Firewall should be in Detection or Prevention mode"
+#   type        = string
+#   default     = "Detection"
+# }
+
+# # #frontdoor Classic
+# variable "front_door_waf_template_redirect_path" {
+#   description = "The URL to redirect a user to if a rule's action is Redirect"
+#   type        = string
+# }
 
 variable "health_check_path" {
   description = "The path for the health check"
@@ -86,31 +99,19 @@ variable "tags" {
   default     = {}
 }
 
-# #frontdoor
-# variable "template_primary_app_service_url" {
-#   description = "The primary App Service URL for the Template Service"
+
+# #frontdoor Classic
+# variable "template_ssl_certificate_name" {
+#   description = "The SSL certificate name in the environment Key Vault for the applications service"
 #   type        = string
+#   default     = "unused"
 # }
 
-# #frontdoor
-# variable "template_secondary_app_service_url" {
-#   description = "The secondary App Service URL for the Template Service"
+# #frontdoor Classic
+# variable "template_public_url" {
+#   description = "The public URL for the Template Service frontend web app"
 #   type        = string
-#   default     = ""
 # }
-
-#frontdoor
-variable "template_ssl_certificate_name" {
-  description = "The SSL certificate name in the environment Key Vault for the applications service"
-  type        = string
-  default     = "unused"
-}
-
-#frontdoor
-variable "template_public_url" {
-  description = "The public URL for the Template Service frontend web app"
-  type        = string
-}
 
 # variable "tag_owner_michael" {
 #   description = "Who created the resource and pushes into it"
@@ -128,6 +129,9 @@ variable "tooling_config" {
     network_name            = string
     network_rg              = string
     subscription_id         = string
+    frontdoor_name          = string
+    frontdoor_rg            = string
+    frontdoor_ep_name       = string
   })
 }
 
@@ -144,8 +148,3 @@ variable "web_app_domain" {
   description = "The domain for the web app"
   type        = string
 }
-
-# variable "web_app_domain_premium" {
-#   description = "The domain for the web app"
-#   type        = string
-# }

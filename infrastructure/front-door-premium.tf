@@ -1,17 +1,8 @@
 # --------------------------------FRONT DOOR PREMIUM CODE BELOW---------------------------------------------------------------
-
-resource "azurerm_cdn_frontdoor_profile" "web" {
-  name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  resource_group_name = azurerm_resource_group.primary.name
-  sku_name            = "Premium_AzureFrontDoor"
-
-  tags = local.tags
-}
-
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
+  provider                 = azurerm.tooling
   session_affinity_enabled = true
 
   health_probe {
@@ -29,10 +20,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "web" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "web" {
-  name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.web.id
-  enabled                       = true
-
+  name                           = "${local.org}-fd-${local.service_name}-web-${var.environment}"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.web.id
+  enabled                        = true
+  provider                       = azurerm.tooling
   certificate_name_check_enabled = true
 
   host_name          = module.template_app_web.default_site_hostname
@@ -43,17 +34,11 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   weight             = 1000
 }
 
-resource "azurerm_cdn_frontdoor_endpoint" "web" {
-  name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-
-  tags = local.tags
-}
-
 resource "azurerm_cdn_frontdoor_custom_domain" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
   host_name                = var.web_app_domain
+  provider                 = azurerm.tooling
 
   tls {
     certificate_type    = "ManagedCertificate"
@@ -63,9 +48,10 @@ resource "azurerm_cdn_frontdoor_custom_domain" "web" {
 
 resource "azurerm_cdn_frontdoor_route" "web" {
   name                          = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.web.id
+  cdn_frontdoor_endpoint_id     = data.azurerm_cdn_frontdoor_endpoint.web.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.web.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.web.id]
+  provider                      = azurerm.tooling
 
   forwarding_protocol    = "MatchRequest"
   https_redirect_enabled = true
@@ -80,18 +66,19 @@ resource "azurerm_cdn_frontdoor_route" "web" {
 resource "azurerm_cdn_frontdoor_custom_domain_association" "web" {
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.web.id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.web.id]
+  provider                       = azurerm.tooling
 }
 
 # WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
   name                              = replace("${local.org}-waf-${local.service_name}-web-${var.environment}", "-", "")
-  resource_group_name               = azurerm_resource_group.primary.name
+  resource_group_name               = var.tooling_config.frontdoor_rg
   sku_name                          = "Premium_AzureFrontDoor"
   enabled                           = true
   mode                              = "Prevention"
   custom_block_response_status_code = 403
-
-  tags = local.tags
+  provider                          = azurerm.tooling
+  tags                              = local.tags
 
   custom_rule {
     name                           = "RateLimitHttpRequest"
@@ -127,8 +114,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
 
 resource "azurerm_cdn_frontdoor_security_policy" "web" {
   name                     = replace("${local.org}-sec-${local.service_name}-web-${var.environment}", "-", "")
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.web.id
-
+  cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
+  provider                 = azurerm.tooling
   security_policies {
     firewall {
       cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.web.id
@@ -146,8 +133,9 @@ resource "azurerm_cdn_frontdoor_security_policy" "web" {
 # moinitoring
 resource "azurerm_monitor_diagnostic_setting" "web_front_door" {
   name                       = "${local.org}-fd-mds-${local.service_name}-web-${var.environment}"
-  target_resource_id         = azurerm_cdn_frontdoor_profile.web.id
+  target_resource_id         = data.azurerm_cdn_frontdoor_profile.web.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  provider                   = azurerm.tooling
 
   enabled_log {
     category = "FrontdoorWebApplicationFirewallLog"
