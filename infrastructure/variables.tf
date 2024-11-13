@@ -121,6 +121,7 @@ variable "tags" {
 #   }
 # }
 
+# tflint-ignore: terraform_unused_declarations
 variable "tooling_config" {
   description = "Config for the tooling subscription resources"
   type = object({
