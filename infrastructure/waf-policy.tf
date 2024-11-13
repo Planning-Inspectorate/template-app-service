@@ -1,3 +1,5 @@
+# Required for front door classic
+
 # resource "azurerm_frontdoor_firewall_policy" "template_frontend" {
 #   name                              = replace("pinswaf${local.service_name}${local.resource_suffix}", "-", "")
 #   resource_group_name               = azurerm_resource_group.primary.name

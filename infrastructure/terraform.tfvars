@@ -11,5 +11,5 @@ tooling_config = {
   frontdoor_rg            = "pins-rg-common-tooling"
   frontdoor_ep_name       = "pins-fde-template"
 }
-# regex("^pins-fde-template-[a-zA-Z0-9\\.].*.net$", "pins-fde-template-edgaf3g2cgejhyca.a03.azurefd.net")
+
 

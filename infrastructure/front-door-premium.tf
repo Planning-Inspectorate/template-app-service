@@ -1,13 +1,4 @@
 # --------------------------------FRONT DOOR PREMIUM CODE BELOW---------------------------------------------------------------
-
-# resource "azurerm_cdn_frontdoor_profile" "web" {
-#   name                = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-#   resource_group_name = azurerm_resource_group.primary.name
-#   sku_name            = "Premium_AzureFrontDoor"
-
-#   tags = local.tags
-# }
-
 resource "azurerm_cdn_frontdoor_origin_group" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
@@ -42,13 +33,6 @@ resource "azurerm_cdn_frontdoor_origin" "web" {
   priority           = 1
   weight             = 1000
 }
-
-# resource "azurerm_cdn_frontdoor_endpoint" "web" {
-#   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
-#   cdn_frontdoor_profile_id = data.azurerm_cdn_frontdoor_profile.web.id
-
-#   tags = local.tags
-# }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "web" {
   name                     = "${local.org}-fd-${local.service_name}-web-${var.environment}"
@@ -121,11 +105,11 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "web" {
     }
   }
 
-  # managed_rule {
-  #   type    = "Microsoft_DefaultRuleSet"
-  #   version = "2.1"
-  #   action  = "Log"
-  # }
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Log"
+  }
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "web" {
