@@ -23,6 +23,9 @@ common_config = {
 
 environment = "dev"
 
+# health_check_path                 = "/health"
+# health_check_eviction_time_in_min = 10
+
 sql_config = {
   admin = {
     login_username = "pins-odt-sql-dev-template"
@@ -49,8 +52,6 @@ vnet_config = {
 
 web_app_domain = "template-service-dev.planninginspectorate.gov.uk"
 
-
 # #FrontDoor Classic
 # template_public_url                   = "template-service-dev.planninginspectorate.gov.uk"
 # front_door_waf_template_redirect_path = "/error/firewall-error"
-
