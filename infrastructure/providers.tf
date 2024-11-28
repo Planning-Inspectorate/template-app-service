@@ -29,3 +29,10 @@ provider "azurerm" {
 
   features {}
 }
+
+provider "azurerm" {
+  alias                           = "horizon"
+  subscription_id                 = var.horizon_infra_config.subscription_id
+  resource_provider_registrations = "none"
+  features {}
+}
