@@ -40,6 +40,7 @@ variable "environment" {
   type        = string
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "front_door_config" {
   description = "Config for the frontdoor in tooling subscription"
   type = object({
@@ -56,6 +57,7 @@ variable "health_check_path" {
   default     = "/health"
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "health_check_eviction_time_in_min" {
   description = "The eviction time in minutes for the health check"
   type        = number

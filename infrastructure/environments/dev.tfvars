@@ -23,6 +23,7 @@ common_config = {
 
 environment = "dev"
 
+# tflint-ignore: terraform_unused_declarations
 front_door_config = {
   name        = "pins-fd-common-tooling"
   rg          = "pins-rg-common-tooling"

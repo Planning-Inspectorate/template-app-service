@@ -28,10 +28,10 @@ module "template_app_web" {
   outbound_vnet_connectivity      = true
 
   # monitoring
-  action_group_ids                  = local.action_group_ids
-  log_analytics_workspace_id        = azurerm_log_analytics_workspace.main.id
-  monitoring_alerts_enabled         = var.alerts_enabled
-  health_check_path                 = var.health_check_path
+  action_group_ids           = local.action_group_ids
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  monitoring_alerts_enabled  = var.alerts_enabled
+  health_check_path          = var.health_check_path
   # health_check_eviction_time_in_min = var.health_check_eviction_time_in_min
 
   app_settings = {
