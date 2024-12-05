@@ -31,8 +31,8 @@ front_door_config = {
   use_tooling = true
 }
 
-# health_check_path                 = "/health"
-# health_check_eviction_time_in_min = 10
+health_check_path                 = "/health"
+health_check_eviction_time_in_min = 10
 
 sql_config = {
   admin = {
