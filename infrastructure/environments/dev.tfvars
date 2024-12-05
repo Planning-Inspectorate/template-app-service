@@ -23,8 +23,16 @@ common_config = {
 
 environment = "dev"
 
-# health_check_path                 = "/health"
-# health_check_eviction_time_in_min = 10
+# tflint-ignore: terraform_unused_declarations
+front_door_config = {
+  name        = "pins-fd-common-tooling"
+  rg          = "pins-rg-common-tooling"
+  ep_name     = "pins-fde-appeals"
+  use_tooling = true
+}
+
+health_check_path                 = "/health"
+health_check_eviction_time_in_min = 10
 
 sql_config = {
   admin = {

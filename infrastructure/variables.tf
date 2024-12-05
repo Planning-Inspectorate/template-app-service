@@ -40,25 +40,16 @@ variable "environment" {
   type        = string
 }
 
-# #frontdoor Classic
-# variable "feature_front_door_failover_enaled" {
-#   description = "Whether or not the backend pools should be created with both the primary and secondary app service urls. This feature flag is temporary."
-#   type        = bool
-#   default     = false
-# }
-
-# #frontfoor Classic
-# variable "front_door_waf_mode" {
-#   description = "Indicates if the Web Application Firewall should be in Detection or Prevention mode"
-#   type        = string
-#   default     = "Detection"
-# }
-
-# # #frontdoor Classic
-# variable "front_door_waf_template_redirect_path" {
-#   description = "The URL to redirect a user to if a rule's action is Redirect"
-#   type        = string
-# }
+# tflint-ignore: terraform_unused_declarations
+variable "front_door_config" {
+  description = "Config for the frontdoor in tooling subscription"
+  type = object({
+    name        = string
+    rg          = string
+    ep_name     = string
+    use_tooling = bool
+  })
+}
 
 variable "health_check_path" {
   description = "The path for the health check"
@@ -66,6 +57,7 @@ variable "health_check_path" {
   default     = "/health"
 }
 
+# tflint-ignore: terraform_unused_declarations
 variable "health_check_eviction_time_in_min" {
   description = "The eviction time in minutes for the health check"
   type        = number
@@ -99,19 +91,6 @@ variable "tags" {
   default     = {}
 }
 
-
-# #frontdoor Classic
-# variable "template_ssl_certificate_name" {
-#   description = "The SSL certificate name in the environment Key Vault for the applications service"
-#   type        = string
-#   default     = "unused"
-# }
-
-# #frontdoor Classic
-# variable "template_public_url" {
-#   description = "The public URL for the Template Service frontend web app"
-#   type        = string
-# }
 
 # variable "tag_owner_michael" {
 #   description = "Who created the resource and pushes into it"
