@@ -9,14 +9,14 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.114.0"
+      version = "4.8.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.6.2"
+      version = "3.6.3"
     }
   }
-  required_version = ">= 1.7.3"
+  required_version = ">= 1.7.3, < 1.10.0"
 }
 
 provider "azurerm" {
@@ -26,14 +26,6 @@ provider "azurerm" {
 provider "azurerm" {
   alias           = "tooling"
   subscription_id = var.tooling_config.subscription_id
-
-  features {}
-}
-
-provider "azurerm" {
-  # either tooling or prod for shared FD instance
-  alias           = "front_door"
-  subscription_id = var.front_door_config.use_tooling == true ? var.tooling_config.subscription_id : null
 
   features {}
 }
