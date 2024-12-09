@@ -21,14 +21,23 @@ variable "apps_config" {
   })
 }
 
-variable "auth_config" {
+variable "auth_client_id" {
   description = "Config for the Easy Auth"
-  type = object({
-    client_id       = string
-    provider_secret = string
-    tenant_endpoint = string
-  })
+  type        = string
+  default     = null
 }
+
+variable "auth_provider_secret" {
+  description = "Config for the Easy Auth"
+  type        = string
+  default     = null
+}
+
+# variable "auth_tenant_endpoint" {
+#   description = "Config for the Easy Auth"
+#   type        = string
+#   default     = null
+# }
 
 variable "common_config" {
   description = "Config for the common resources, such as action groups"

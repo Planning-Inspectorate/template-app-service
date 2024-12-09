@@ -36,9 +36,9 @@ module "template_app_web" {
 
   #Easy Auth setting
   auth_config = {
-    auth_client_id       = var.auth_config.client_id
-    auth_provider_secret = var.auth_config.provider_secret
-    auth_tenant_endpoint = var.auth_config.tenant_endpoint
+    auth_client_id       = var.auth_client_id
+    auth_provider_secret = var.auth_provider_secret
+    auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
   }
 
   app_settings = {

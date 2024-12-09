@@ -11,11 +11,11 @@ apps_config = {
 
 alerts_enabled = false
 
-auth_config = {
-  client_id       = "20838096-03c3-4e28-8053-ca7bda6b3e09"
-  provider_secret = "Azure DevOps Pipelines - DevOps Template - Infrastructure DEV"
-  tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
-}
+
+auth_client_id       = "20838096-03c3-4e28-8053-ca7bda6b3e09"
+auth_provider_secret = "Azure DevOps Pipelines - DevOps Template - Infrastructure DEV"
+# auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+
 common_config = {
   resource_group_name = "pins-rg-common-dev-ukw-001"
   action_group_names = {
