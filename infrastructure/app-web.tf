@@ -1,6 +1,6 @@
 module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
-  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=1.31"
+  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=1.31.1"
 
   resource_group_name = azurerm_resource_group.primary.name
   location            = module.primary_region.location
@@ -33,6 +33,13 @@ module "template_app_web" {
   monitoring_alerts_enabled         = var.alerts_enabled
   health_check_path                 = var.health_check_path
   health_check_eviction_time_in_min = var.health_check_eviction_time_in_min
+
+  #Easy Auth setting
+  auth_config = {
+    auth_client_id       = var.auth_config.client_id
+    auth_provider_secret = var.auth_config.provider_secret
+    auth_tenant_endpoint = var.auth_config.tenant_endpoint
+  }
 
   app_settings = {
     APPLICATIONINSIGHTS_CONNECTION_STRING      = local.key_vault_refs["app-insights-connection-string"]
