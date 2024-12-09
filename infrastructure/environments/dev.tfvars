@@ -12,8 +12,8 @@ apps_config = {
 alerts_enabled = false
 
 
-auth_client_id       = "623081bf-a1f2-4cae-ba90-b5d264c46373"
-auth_provider_secret = "Pins-AR-Template-Dev"
+auth_client_id = "623081bf-a1f2-4cae-ba90-b5d264c46373"
+# auth_provider_secret = "Pins-AR-Template-Dev"
 # auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
 
 common_config = {

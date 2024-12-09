@@ -37,7 +37,7 @@ module "template_app_web" {
   #Easy Auth setting
   auth_config = {
     auth_client_id       = var.auth_client_id
-    auth_provider_secret = var.auth_provider_secret
+    auth_provider_secret = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
     auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
   }
 
@@ -50,6 +50,9 @@ module "template_app_web" {
     # logging
     LOG_LEVEL_FILE   = var.apps_config.logging.level_file
     LOG_LEVEL_STDOUT = var.apps_config.logging.level_stdout
+
+    #Auth
+    "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET" = azuread_application_password.template.value
   }
 
   providers = {

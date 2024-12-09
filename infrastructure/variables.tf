@@ -27,11 +27,11 @@ variable "auth_client_id" {
   default     = null
 }
 
-variable "auth_provider_secret" {
-  description = "Config for the Easy Auth"
-  type        = string
-  default     = null
-}
+# variable "auth_provider_secret" {
+#   description = "Config for the Easy Auth"
+#   type        = string
+#   default     = null
+# }
 
 # variable "auth_tenant_endpoint" {
 #   description = "Config for the Easy Auth"
