@@ -1,6 +1,6 @@
 module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
-  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=1.31.3"
+  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=3b1ef293e3d1d9ce34353f845283aa3c6b1b9f9b"
 
   resource_group_name = azurerm_resource_group.primary.name
   location            = module.primary_region.location
