@@ -1,6 +1,6 @@
 module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
-  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=75e70c36a0609ba1a0def7b086610dacbd064c4d"
+  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=f0eb80cc421c6f81c28d5c1a2b8b05d7c555290f"
   resource_group_name = azurerm_resource_group.primary.name
   location            = module.primary_region.location
 
@@ -52,6 +52,7 @@ module "template_app_web" {
 
     #Auth
     MICROSOFT_PROVIDER_AUTHENTICATION_SECRET = local.key_vault_refs["microsoft-provider-authentication-secret"]
+    WEBSITE_AUTH_AAD_ALLOWED_TENANTS = data.azurerm_client_config.current.tenant_id
   }
 
   providers = {
