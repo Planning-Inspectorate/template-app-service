@@ -38,7 +38,7 @@ module "template_app_web" {
   auth_config = {
     auth_client_id       = var.auth_client_id
     auth_provider_secret = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
-    auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+    auth_tenant_endpoint = "https://sts.windows.net/${data.azurerm_client_config.current.tenant_id}/v2.0"
   }
 
   app_settings = {
