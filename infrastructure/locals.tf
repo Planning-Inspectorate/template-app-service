@@ -22,7 +22,9 @@ locals {
 
   ])
 
-  secrets = []
+  secrets = [
+    "microsoft-provider-authentication-secret"
+  ]
 
   # tflint-ignore: terraform_unused_declarations
   key_vault_refs = merge(
