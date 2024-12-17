@@ -1,6 +1,6 @@
 module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
-  source              = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=23f64b2f032faf305295f8ebda114bb93fe158ba"
+  source              = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=8b3150b96dc1bd0ac166b7137dbad8e026da06cd"
   resource_group_name = azurerm_resource_group.primary.name
   location            = module.primary_region.location
 
@@ -37,7 +37,7 @@ module "template_app_web" {
   auth_config = {
     auth_client_id       = var.auth_client_id
     auth_provider_secret = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
-    auth_tenant_endpoint = "https://sts.windows.net/${data.azurerm_client_config.current.tenant_id}/v2.0"
+    auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
   }
 
   app_settings = {
@@ -62,8 +62,8 @@ module "template_app_web" {
 }
 
 # ## RBAC for secrets
-# resource "azurerm_role_assignment" "app_web_secrets_user" {
-#   scope                = azurerm_key_vault.main.id
-#   role_definition_name = "Key Vault Secrets User"
-#   principal_id         = module.template_app_web.principal_id
-# }
+resource "azurerm_role_assignment" "app_web_secrets_user" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.template_app_web.principal_id
+}
