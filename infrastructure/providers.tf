@@ -29,3 +29,11 @@ provider "azurerm" {
 
   features {}
 }
+
+provider "azurerm" {
+  # either tooling or prod for shared FD instance
+  alias           = "front_door"
+  subscription_id = var.front_door_config.use_tooling == true ? var.tooling_config.subscription_id : null
+
+  features {}
+}
