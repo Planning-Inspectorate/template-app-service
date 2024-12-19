@@ -1,6 +1,6 @@
 module "template_app_web" {
   #checkov:skip=CKV_TF_1: Use of commit hash are not required for our Terraform modules
-  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=1.31"
+  source = "github.com/Planning-Inspectorate/infrastructure-modules.git//modules/node-app-service?ref=2247e8402dcd59ac13536e7ca9667b9263614924"
 
   resource_group_name = azurerm_resource_group.primary.name
   location            = module.primary_region.location
@@ -34,6 +34,14 @@ module "template_app_web" {
   health_check_path                 = var.health_check_path
   health_check_eviction_time_in_min = var.health_check_eviction_time_in_min
 
+  #Easy Auth setting
+  auth_config = {
+    auth_client_id       = var.auth_client_id
+    auth_provider_secret = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+    auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+    allowed_audiences    = var.auth_client_id
+  }
+
   app_settings = {
     APPLICATIONINSIGHTS_CONNECTION_STRING      = local.key_vault_refs["app-insights-connection-string"]
     ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
@@ -43,6 +51,10 @@ module "template_app_web" {
     # logging
     LOG_LEVEL_FILE   = var.apps_config.logging.level_file
     LOG_LEVEL_STDOUT = var.apps_config.logging.level_stdout
+
+    #Auth
+    MICROSOFT_PROVIDER_AUTHENTICATION_SECRET = local.key_vault_refs["microsoft-provider-authentication-secret"]
+    WEBSITE_AUTH_AAD_ALLOWED_TENANTS         = data.azurerm_client_config.current.tenant_id
   }
 
   providers = {

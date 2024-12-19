@@ -10,6 +10,8 @@ apps_config = {
 }
 
 alerts_enabled = false
+
+auth_client_id = "623081bf-a1f2-4cae-ba90-b5d264c46373"
 common_config = {
   resource_group_name = "pins-rg-common-dev-ukw-001"
   action_group_names = {
@@ -23,15 +25,15 @@ common_config = {
 
 environment = "dev"
 
-# health_check_path                 = "/health"
-# health_check_eviction_time_in_min = 10
-
 front_door_config = {
   name        = "pins-fd-common-tooling"
   rg          = "pins-rg-common-tooling"
   ep_name     = "pins-fde-appeals"
   use_tooling = true
 }
+
+health_check_path                 = "/health"
+health_check_eviction_time_in_min = 10
 
 sql_config = {
   admin = {
