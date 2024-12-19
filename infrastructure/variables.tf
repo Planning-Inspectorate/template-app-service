@@ -21,6 +21,12 @@ variable "apps_config" {
   })
 }
 
+variable "auth_client_id" {
+  description = "Config for the Easy Auth"
+  type        = string
+  default     = null
+}
+
 variable "common_config" {
   description = "Config for the common resources, such as action groups"
   type = object({
@@ -59,6 +65,16 @@ variable "environment" {
 #   description = "The URL to redirect a user to if a rule's action is Redirect"
 #   type        = string
 # }
+
+variable "front_door_config" {
+  description = "Config for the frontdoor in tooling subscription"
+  type = object({
+    name        = string
+    rg          = string
+    ep_name     = string
+    use_tooling = bool
+  })
+}
 
 variable "health_check_path" {
   description = "The path for the health check"
