@@ -21,10 +21,15 @@ variable "apps_config" {
   })
 }
 
-variable "auth_client_id" {
-  description = "Config for the Easy Auth"
-  type        = string
-  default     = null
+variable "auth_config" {
+  description = "Config for the azure authentication"
+  type = object({
+    auth_enabled           = bool
+    require_authentication = bool
+    auth_client_id         = string
+    allowed_audiences      = string
+    allowed_applications   = string
+  })
 }
 
 variable "common_config" {
