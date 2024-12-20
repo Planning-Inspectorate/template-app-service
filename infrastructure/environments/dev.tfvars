@@ -11,7 +11,14 @@ apps_config = {
 
 alerts_enabled = false
 
-auth_client_id = "623081bf-a1f2-4cae-ba90-b5d264c46373"
+auth_config = {
+  auth_enabled           = true
+  require_authentication = true
+  auth_client_id         = "623081bf-a1f2-4cae-ba90-b5d264c46373"
+  allowed_audiences      = "https://template-service-dev.planninginspectorate.gov.uk/.auth/login/aad/callback"
+  allowed_applications   = "623081bf-a1f2-4cae-ba90-b5d264c46373"
+}
+
 common_config = {
   resource_group_name = "pins-rg-common-dev-ukw-001"
   action_group_names = {
