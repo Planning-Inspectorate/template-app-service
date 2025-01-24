@@ -50,3 +50,5 @@ extends:
               azurecrName: $(azurecrName)
               dockerfilePath: $(Build.SourcesDirectory)/app/Dockerfile
               repository: devops/template
+              buildArgs:
+                - GIT_SHA=$(Build.SourceVersion)
