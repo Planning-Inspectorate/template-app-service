@@ -22,7 +22,7 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: refs/tags/release/3.18.2
+      ref: refs/tags/release/3.20.0
   pipelines:
     - pipeline: build
       source: Build
@@ -30,10 +30,6 @@ resources:
         branches:
           include:
             - main
-        paths:
-          exclude:
-          - infrastructure
-          - packer
 
 extends:
   template: stages/wrapper_cd.yml@templates
@@ -46,11 +42,12 @@ extends:
         deploymentJobs:
           - name: Deploy App
             steps:
-              - template: ../steps/azure_web_app_deploy.yml
+              - template: ../steps/azure_web_app_deploy_slot.yml
                 parameters:
                   appName: pins-app-template-web-$(ENVIRONMENT)
                   appResourceGroup: $(resourceGroup)
                   azurecrName: $(azurecrName)
                   repository: devops/template
+                  slot: default
     globalVariables:
       - template: azure-pipelines-variables.yml@self
