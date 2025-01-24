@@ -16,6 +16,7 @@ const staticDir = path.join(srcDir, '.static');
 export default {
     // the URL of the API service
     apiUrl: process.env.API_URL || 'http://localhost:3000',
+    gitSha: process.env.GIT_SHA || '',
     // the log level to use
     logLevel: process.env.LOG_LEVEL || 'info',
     // the HTTP port to listen on
