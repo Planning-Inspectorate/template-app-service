@@ -34,5 +34,13 @@ extends:
                   azurecrName: $(azurecrName)
                   repository: devops/template
                   slot: default
+              - template: ../steps/azure_web_app_verify_git_hash.yml
+                parameters:
+                  appName: template staging slot
+                  appUrl: $(deploySlotOutputs.slotUrl)/health
+                  buildCommit: $(resources.pipeline.build.sourceCommit)
+                  appRegistrationClientId: $(appRegistrationClientId)
+                  auth_enabled: "true"
+                  env: $(ENVIRONMENT)
     globalVariables:
       - template: azure-pipelines-variables.yml@self
