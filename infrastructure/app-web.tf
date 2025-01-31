@@ -21,9 +21,16 @@ module "template_app_web" {
   image_name              = "devops/template"
 
   # networking
+  # app_service_private_dns_zone_id = data.azurerm_private_dns_zone.app_service.id
+  # front_door_restriction          = true
+  # inbound_vnet_connectivity       = false
+  # integration_subnet_id           = azurerm_subnet.apps.id
+  # outbound_vnet_connectivity      = true
+
   app_service_private_dns_zone_id = data.azurerm_private_dns_zone.app_service.id
+  endpoint_subnet_id              = azurerm_subnet.main.id
   front_door_restriction          = true
-  inbound_vnet_connectivity       = false
+  inbound_vnet_connectivity       = var.apps_config.private_endpoint_enabled
   integration_subnet_id           = azurerm_subnet.apps.id
   outbound_vnet_connectivity      = true
 
