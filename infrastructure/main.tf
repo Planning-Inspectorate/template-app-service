@@ -1,6 +1,6 @@
 module "primary_region" {
   source  = "claranet/regions/azurerm"
-  version = "7.2.1"
+  version = "7.3.1"
 
   azure_region = local.primary_location
 }
