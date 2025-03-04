@@ -15,7 +15,9 @@ const monitoringRoutes = createMonitoringRoutes({
 
 // setup the handlers for the pages
 router.use('/', monitoringRoutes);
-router.route('/').get(viewHomepage);
+router.route('/')
+    .get(viewHomepage)
+    .post(handlePost);
 router.route('/post').post(handlePost);
 
 // export the router for use by the app
