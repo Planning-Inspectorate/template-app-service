@@ -1,0 +1,12 @@
+{% extends "layouts/main.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block pageContent %}
+
+	{{ govukPanel({
+		titleText: "POST successful",
+		html: "Hopefully this is what you wanted"
+	}) }}
+
+{% endblock %}
