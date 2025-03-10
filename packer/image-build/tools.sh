@@ -57,6 +57,12 @@ sudo apt install -y --no-install-recommends \
   python3-setuptools \
   python3-apt
 
+# python 3.13 as default and echo the result
+sudo ln -sf /usr/bin/python3.13 /usr/bin/python3
+echo "==================== PYTHON DEFAULT VERSION ===================="
+python3 --version
+echo "================================================================"
+
 # Terraform 1.9.6
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
@@ -89,13 +95,5 @@ sudo apt-get update; \
 pwsh -c "& {Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force -Verbose}"
 pwsh -c "& {Get-Module -ListAvailable}"
 
-# python 3.13 as default
-sudo ln -sf /usr/bin/python3.13 /usr/bin/python3
-
-# python version
-echo "==================== PYTHON DEFAULT VERSION ===================="
-python3 --version
-echo "================================================================"
-
-# Sysprep - NB: do not add anything below this following command
+# Sysprep
 /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
