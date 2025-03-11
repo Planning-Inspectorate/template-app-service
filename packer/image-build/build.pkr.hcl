@@ -29,7 +29,7 @@ build {
 
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu24-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "agent-ubuntu22-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
 os_type         = "Linux"
     image_publisher = "canonical"
