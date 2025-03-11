@@ -10,8 +10,11 @@ packer {
 source "azure-arm" "packer-image" {
   azure_tags = {
     Environment      = "Dev"
+    os_type          = "Ubuntu24"
     Project          = "Template"
     CreatedBy        = "Packer"
+    Node             = "22"
+    Python           = "3.12"
     TerraformVersion = "${var.terraform_version}"
   }
 
@@ -26,12 +29,12 @@ build {
 
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu20-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "agent-ubuntu24-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
     image_offer     = "0001-com-ubuntu-server-focal"
-    image_sku       = "20_04-lts"
+    image_sku       = "24_04-lts"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
