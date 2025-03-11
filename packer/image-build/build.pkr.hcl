@@ -10,7 +10,7 @@ packer {
 source "azure-arm" "packer-image" {
   azure_tags = {
     Environment      = "Dev"
-    os_type          = "Ubuntu24"
+    os_type          = "Ubuntu22"
     Project          = "Template"
     CreatedBy        = "Packer"
     Node             = "22"
@@ -29,12 +29,12 @@ build {
 
   source "source.azure-arm.packer-image" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu24-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "agent-ubuntu22-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
-    os_type         = "Linux"
+os_type         = "Linux"
     image_publisher = "canonical"
-    image_offer     = "0001-com-ubuntu-server-focal"
-    image_sku       = "24_04-lts"
+    image_offer     = "0001-com-ubuntu-server-jammy"
+    image_sku       = "22_04-lts"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
@@ -52,7 +52,7 @@ build {
 
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
-    script          = "${path.cwd}/tools.sh"
+    script          = "${path.cwd}/tools-odw.sh"
   }
 }
 
