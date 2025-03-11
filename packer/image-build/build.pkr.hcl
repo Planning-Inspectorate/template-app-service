@@ -52,7 +52,7 @@ build {
 
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
-    script          = "${path.cwd}/tools.sh"
+    script          = "${path.cwd}/tools-odw.sh"
   }
 }
 
