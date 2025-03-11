@@ -12,9 +12,6 @@ resources:
       name: Planning-Inspectorate/common-pipeline-templates
       ref: refs/tags/release/3.20.0
 
-variables:
-  - group: template-packer
-
 jobs:
   - job: Build
     displayName: Build and Save Azure Scale Set Image
