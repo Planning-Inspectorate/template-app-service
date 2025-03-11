@@ -10,7 +10,7 @@ packer {
 source "azure-arm" "packer-image" {
   azure_tags = {
     Environment      = "Dev"
-    os_type          = "Ubuntu24"
+    os_type          = "Ubuntu22"
     Project          = "Template"
     CreatedBy        = "Packer"
     Node             = "22"
