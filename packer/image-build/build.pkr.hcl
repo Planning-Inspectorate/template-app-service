@@ -31,16 +31,11 @@ build {
     managed_image_resource_group_name = var.template_resource_group_name
     managed_image_name                = "agent-ubuntu24-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
-    os_type         = "Linux"
+os_type         = "Linux"
     image_publisher = "canonical"
     image_offer     = "ubuntu-24_04-lts"
     image_sku       = "24_04-lts"
-
-    plan {
-      name      = "minimal-gen1"
-      product   = "ubuntu-24_04-lts"
-      publisher = "canonical"
-    }
+    plan_id         = "minimal-gen1"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
