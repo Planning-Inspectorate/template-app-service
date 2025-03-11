@@ -35,7 +35,6 @@ os_type         = "Linux"
     image_publisher = "canonical"
     image_offer     = "ubuntu-24_04-lts"
     image_sku       = "24_04-lts"
-    plan_id         = "minimal-gen1"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
