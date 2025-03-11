@@ -33,7 +33,7 @@ build {
 
     os_type         = "Linux"
     image_publisher = "canonical"
-    image_offer     = "0001-com-ubuntu-server-focal"
+    image_offer     = "0001-com-ubuntu-server-minimal"
     image_sku       = "24_04-lts"
 
     location = "UK South"
