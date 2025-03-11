@@ -33,8 +33,14 @@ build {
 
     os_type         = "Linux"
     image_publisher = "canonical"
-    image_offer     = "0001-com-ubuntu-server-minimal"
+    image_offer     = "ubuntu-24_04-lts"
     image_sku       = "24_04-lts"
+
+    plan {
+      name      = "minimal-gen1"
+      product   = "ubuntu-24_04-lts"
+      publisher = "canonical"
+    }
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
