@@ -1,5 +1,4 @@
 trigger: none
-
 pr: none
 
 pool:
@@ -11,7 +10,7 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: refs/tags/release/3.1.0
+      ref: refs/tags/release/3.20.0
 
 variables:
   - group: template-packer
@@ -37,10 +36,8 @@ jobs:
         displayName: Packer Build
         env:
           PKR_VAR_client_id: $(AZURE_SERVICE_PRINCIPAL_ID)
-          PKR_VAR_client_secret: $(AZURE_SERVICE_PRINCIPAL_SECRET)
           PKR_VAR_subscription_id: $(ODT_DEV_SUBSCRIPTION_ID)
           PKR_VAR_tenant_id: $(AZURE_TENANT_ID)
-          PKR_VAR_template_resource_group_name: $(templateResourceGroupName)
         workingDirectory: $(Build.Repository.LocalPath)/packer/image-build
     variables:
       templateResourceGroupName: pins-rg-template-dev
