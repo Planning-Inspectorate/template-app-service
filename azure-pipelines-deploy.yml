@@ -7,7 +7,7 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: refs/tags/release/3.20.0
+      ref: refs/tags/release/3.20.3
   pipelines:
     - pipeline: build
       source: Build
@@ -34,5 +34,13 @@ extends:
                   azurecrName: $(azurecrName)
                   repository: devops/template
                   slot: default
+              - template: ../steps/azure_web_app_verify_git_hash.yml
+                parameters:
+                  appName: template staging slot
+                  appUrl: $(deploySlotOutputs.slotUrl)/health
+                  buildCommit: $(resources.pipeline.build.sourceCommit)
+                  appRegistrationClientId: $(appRegistrationClientId)
+                  auth_enabled: "true"
+                  env: $(ENVIRONMENT)
     globalVariables:
       - template: azure-pipelines-variables.yml@self
