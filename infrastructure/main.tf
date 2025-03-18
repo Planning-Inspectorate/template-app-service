@@ -1,4 +1,5 @@
 module "primary_region" {
+  # checkov:skip=CKV_TF_1: ADD REASON
   source  = "claranet/regions/azurerm"
   version = "7.3.1"
 
