@@ -44,6 +44,13 @@ sudo apt install -y --no-install-recommends \
   git-lfs \
   git-ftp
 
+sudo apt install -y --no-install-recommends \
+  python3.13 \
+  python3-setuptools \
+  python3-apt
+
+sudo ln -sf /usr/bin/python3.13 /usr/bin/python3
+
 echo "==================== PYTHON DEFAULT VERSION ===================="
 python3 --version
 echo "================================================================"
