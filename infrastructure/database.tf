@@ -1,8 +1,9 @@
 resource "azurerm_mssql_server" "primary" {
-  #checkov:skip=CKV_AZURE_113: Public access enabled for testing
+  #checkov:skip=CKV2_AZURE_2: setup alerts and vulnerability assessments
   #checkov:skip=CKV_AZURE_23: Auditing to be added later
   #checkov:skip=CKV_AZURE_24: Auditing to be added later
-  #checkov:skip=CKV2_AZURE_2: setup alerts and vulnerability assessments
+  #checkov:skip=CKV_AZURE_113: Public access enabled for testing
+
   name                          = "${local.org}-sql-${local.service_name}-primary-${var.environment}"
   resource_group_name           = azurerm_resource_group.primary.name
   location                      = module.primary_region.location
@@ -62,7 +63,6 @@ resource "azurerm_private_endpoint" "sql_primary" {
 }
 
 resource "azurerm_mssql_database" "primary" {
-  # geo_redundant_backup_enabled = true this is not expected here, must be an older version of TF that expects it and perhaps checkov is tied to that version?
   name           = "${local.org}-sqldb-${local.resource_suffix}"
   server_id      = azurerm_mssql_server.primary.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
