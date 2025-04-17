@@ -2,6 +2,7 @@ resource "azurerm_mssql_server" "primary" {
   #checkov:skip=CKV_AZURE_113: Public access enabled for testing
   #checkov:skip=CKV_AZURE_23: Auditing to be added later
   #checkov:skip=CKV_AZURE_24: Auditing to be added later
+  #checkov:skip=CKV2_AZURE_2: setup alerts and vulnerability assessments
   name                          = "${local.org}-sql-${local.service_name}-primary-${var.environment}"
   resource_group_name           = azurerm_resource_group.primary.name
   location                      = module.primary_region.location
@@ -22,6 +23,22 @@ resource "azurerm_mssql_server" "primary" {
 
   tags = local.tags
 }
+
+# resource "azurerm_storage_account" "primary" {
+#   name                     = "${local.org}-sql-${local.service_name}-primary-${var.environment}"
+#   resource_group_name      = azurerm_resource_group.primary.name
+#   location                 = azurerm_resource_group.primary.location
+#   account_tier             = "Standard"
+#   account_replication_type = "LRS"
+# }
+
+# resource "azurerm_mssql_server_extended_auditing_policy" "primary" {
+#   server_id                               = azurerm_mssql_server.primary.id
+#   storage_endpoint                        = azurerm_storage_account.primary.primary_blob_endpoint
+#   storage_account_access_key              = azurerm_storage_account.primary.primary_access_key
+#   storage_account_access_key_is_secondary = true
+#   retention_in_days                       = 120
+# }
 
 resource "azurerm_private_endpoint" "sql_primary" {
   name                = "${local.org}-pe-${local.service_name}-sql-${var.environment}"
@@ -45,12 +62,14 @@ resource "azurerm_private_endpoint" "sql_primary" {
 }
 
 resource "azurerm_mssql_database" "primary" {
-  #checkov:skip=CKV_AZURE_224: TODO: Ensure that the Ledger feature is enabled on database that requires cryptographic proof and nonrepudiation of data integrity
-  name        = "${local.org}-sqldb-${local.resource_suffix}"
-  server_id   = azurerm_mssql_server.primary.id
-  collation   = "SQL_Latin1_General_CP1_CI_AS"
-  sku_name    = var.sql_config.sku_name
-  max_size_gb = var.sql_config.max_size_gb
+  # geo_redundant_backup_enabled = true this is not expected here, must be an older version of TF that expects it and perhaps checkov is tied to that version?
+  name           = "${local.org}-sqldb-${local.resource_suffix}"
+  server_id      = azurerm_mssql_server.primary.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  sku_name       = var.sql_config.sku_name
+  max_size_gb    = var.sql_config.max_size_gb
+  ledger_enabled = true
+  zone_redundant = true
 
   short_term_retention_policy {
     retention_days = var.sql_config.retention.short_term_days
@@ -67,7 +86,6 @@ resource "azurerm_mssql_database" "primary" {
 }
 
 resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
-  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
   key_vault_id = azurerm_key_vault.main.id
   name         = "${local.service_name}-sql-admin-connection-string"
   value = join(
@@ -80,13 +98,13 @@ resource "azurerm_key_vault_secret" "sql_admin_connection_string" {
       "trustServerCertificate=false"
     ]
   )
-  content_type = "connection-string"
+  expiration_date = timeadd(timestamp(), "8760h") # Sets expiration to 1 year from 15/04/25
+  content_type    = "connection-string"
 
   tags = local.tags
 }
 
 resource "azurerm_key_vault_secret" "sql_app_connection_string" {
-  #checkov:skip=CKV_AZURE_41: TODO: Secret rotation
   key_vault_id = azurerm_key_vault.main.id
   name         = "${local.service_name}-sql-app-connection-string"
   value = join(
@@ -99,7 +117,8 @@ resource "azurerm_key_vault_secret" "sql_app_connection_string" {
       "trustServerCertificate=false"
     ]
   )
-  content_type = "connection-string"
+  content_type    = "connection-string"
+  expiration_date = timeadd(timestamp(), "8760h") # Sets expiration to 1 year from when the pipeline is run
 
   tags = local.tags
 }

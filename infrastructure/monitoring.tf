@@ -20,11 +20,11 @@ resource "azurerm_application_insights" "main" {
 }
 
 resource "azurerm_key_vault_secret" "app_insights_connection_string" {
-  #checkov:skip=CKV_AZURE_41: expiration not valid
-  key_vault_id = azurerm_key_vault.main.id
-  name         = "${local.service_name}-app-insights-connection-string"
-  value        = azurerm_application_insights.main.connection_string
-  content_type = "connection-string"
+  key_vault_id    = azurerm_key_vault.main.id
+  name            = "${local.service_name}-app-insights-connection-string"
+  value           = azurerm_application_insights.main.connection_string
+  content_type    = "connection-string"
+  expiration_date = timeadd(timestamp(), "8760h")
 
   tags = local.tags
 }
