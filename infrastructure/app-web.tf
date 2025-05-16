@@ -44,6 +44,7 @@ module "template_app_web" {
     auth_tenant_endpoint   = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
     allowed_applications   = var.auth_config.allowed_applications
     allowed_audiences      = var.auth_config.allowed_audiences
+    excluded_paths         = []
   }
 
   app_settings = {
