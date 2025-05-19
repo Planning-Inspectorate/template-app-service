@@ -24,7 +24,7 @@
 		"govuk-frontend": "^5.10.1",
 		"nunjucks": "^3.2.4",
 		"pino": "^8.14.1",
-		"pino-pretty": "^10.1.0"
+		"pino-pretty": "^13.0.0"
     },
 	"devDependencies": {
 		"cross-env": "^7.0.3",
