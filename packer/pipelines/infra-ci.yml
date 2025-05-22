@@ -1,10 +1,8 @@
-pool:
-  vmImage: ubuntu-latest
-
 trigger:
   branches:
     include:
-      - packer
+      - main
+      - gh-readonly-queue/*
     exclude:
       - app
       - infrastructure
@@ -30,6 +28,8 @@ resources:
 extends:
   template: stages/wrapper_ci.yml@templates
   parameters:
+    pool:
+      name: pins-template-test
     validateName: Validate Terraform
     validationSteps:
       - template: steps/terraform_format.yml@templates
