@@ -22,7 +22,7 @@ source "azure-arm" "azure-agents" {
 }
 
 build {
-  name = "azure-devops-agents"
+  name = "test-devops-agents"
 
   source "source.azure-arm.azure-agents" {
     managed_image_resource_group_name = var.tooling_resource_group_name
