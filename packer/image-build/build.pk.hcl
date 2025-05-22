@@ -7,15 +7,12 @@ packer {
   }
 }
 
-source "azure-arm" "packer-image" {
+source "azure-arm" "azure-agents" {
   azure_tags = {
-    Environment      = "Dev"
-    os_type          = "Ubuntu24"
-    Project          = "Template"
-    CreatedBy        = "Packer"
-    Node             = "22"
-    Python           = "3.12"
-    TerraformVersion = "${var.terraform_version}"
+    Project          = "tooling"
+    CreatedBy        = "packer"
+    NodeVersion      = "22.14.0"
+    TerraformVersion = "1.11.4"
   }
 
   client_id       = var.client_id
@@ -27,28 +24,18 @@ source "azure-arm" "packer-image" {
 build {
   name = "azure-devops-agents"
 
-  source "source.azure-arm.packer-image" {
-    managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu24-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+  source "source.azure-arm.azure-agents" {
+    managed_image_resource_group_name = var.tooling_resource_group_name
+    managed_image_name                = "azure-agents-${formatdate("YYYYMMDDhhmmss", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
     image_offer     = "0001-com-ubuntu-server-focal"
-    image_sku       = "24_04-lts"
+    image_sku       = "20_04-lts"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
   }
-
-  # provisioner "shell" {
-  #   execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
-  #   script          = "${path.cwd}/config.sh"
-  # }
-
-  # provisioner "file" {
-  #   source      = "config.sh"
-  #   destination = "/tmp/config.sh"
-  # }
 
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E bash -e '{{ .Path }}'"
@@ -76,12 +63,7 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "template_resource_group_name" {
-  description = "The name of the Template resource group where the image will be created"
+variable "tooling_resource_group_name" {
+  description = "The name of the Tooling resource group where the image will be created"
   type        = string
-}
-
-variable "terraform_version" {
-  description = "The version of Terraform used in the build"
-  type        =  string
 }
