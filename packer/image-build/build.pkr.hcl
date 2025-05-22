@@ -9,7 +9,7 @@ packer {
 
 source "azure-arm" "azure-agents" {
   azure_tags = {
-    Project          = "tooling"
+    Project          = "template"
     CreatedBy        = "packer"
     NodeVersion      = "22.14.0"
     TerraformVersion = "1.11.4"
@@ -22,11 +22,11 @@ source "azure-arm" "azure-agents" {
 }
 
 build {
-  name = "test-devops-agents"
+  name = "template-agents"
 
   source "source.azure-arm.azure-agents" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "azure-agents-${formatdate("YYYYMMDDhhmmss", timestamp())}"
+    managed_image_name                = "template-agents-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
