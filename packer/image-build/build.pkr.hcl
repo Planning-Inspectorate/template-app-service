@@ -25,7 +25,7 @@ build {
   name = "test-devops-agents"
 
   source "source.azure-arm.azure-agents" {
-    managed_image_resource_group_name = var.tooling_resource_group_name
+    managed_image_resource_group_name = var.template_resource_group_name
     managed_image_name                = "azure-agents-${formatdate("YYYYMMDDhhmmss", timestamp())}"
 
     os_type         = "Linux"
@@ -63,7 +63,7 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "tooling_resource_group_name" {
-  description = "The name of the Tooling resource group where the image will be created"
+variable "template_resource_group_name" {
+  description = "The name of the Template resource group where the image will be created"
   type        = string
 }
