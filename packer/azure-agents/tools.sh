@@ -42,8 +42,8 @@ sudo apt-get install -y --no-install-recommends \
 
 # Python
 sudo apt-get install -y --no-install-recommends \
-  python3.7 \
-  python3.7-distutils \
+  python3.9 \
+  python3.9-distutils \
   python3-pip
 
 # Docker Engine
@@ -71,8 +71,8 @@ sudo apt-get install -y terraform=1.11.4-1 # the hyphen is needed for the repo
 sudo curl -s -L "https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.1/terragrunt_linux_amd64" -o /usr/bin/terragrunt && chmod 777 /usr/bin/terragrunt
 
 # Checkov
-python3.7 -m pip install --force-reinstall packaging==21
-python3.7 -m pip install -U checkov==3.2.405
+python3.9 -m pip install --force-reinstall packaging==21
+python3.9 -m pip install -U checkov==3.2.405
 
 # TFLint
 curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
