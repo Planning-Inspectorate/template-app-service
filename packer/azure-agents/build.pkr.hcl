@@ -26,12 +26,12 @@ build {
 
   source "source.azure-arm.azure-agents" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "template-agents-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "agent-ubuntu20-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
-    image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_offer     = "0001-com-ubuntu-server-focal"
+    image_sku       = "20_04-lts"
 
     location = "UK South"
     vm_size  = "Standard_DS2_v2"
