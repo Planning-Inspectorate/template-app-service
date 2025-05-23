@@ -46,6 +46,9 @@ sudo apt-get install -y --no-install-recommends \
   python3.9-distutils \
   python3-pip
 
+pip install urllib3
+
+
 # Docker Engine
 sudo apt-get install -y docker.io
 
