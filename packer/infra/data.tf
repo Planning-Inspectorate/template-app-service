@@ -3,9 +3,9 @@ data "azurerm_resource_group" "template_rg" {
 }
 
 data "azurerm_image" "packer_images" {
-  name_regex          = "agent-ubuntu20-2025-05-23-1003"
+  name_regex          = "agent"
   resource_group_name = "pins-rg-template-dev"
-  # sort_descending     = true
+  sort_descending     = true
 }
 
 data "azurerm_virtual_network" "template_vnet" {
