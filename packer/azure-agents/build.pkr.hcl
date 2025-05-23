@@ -22,11 +22,11 @@ source "azure-arm" "azure-agents" {
 }
 
 build {
-  name = "template-agents"
+  name = "azure-devops-agents"
 
   source "source.azure-arm.azure-agents" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu20-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "agent-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"
