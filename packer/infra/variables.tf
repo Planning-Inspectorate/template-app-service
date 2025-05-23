@@ -12,7 +12,8 @@ variable "environment" {
 variable "vnet_packer" {
   description = "VNet packer configuration"
   type = object({
-    address_space = string
-    packer_subnet = string
+    address_space  = string
+    packer_subnet  = string
+    bastion_subnet = string
   })
 }

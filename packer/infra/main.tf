@@ -1,4 +1,7 @@
 module "primary_region" {
+
+#checkov:skip=CKV_AZURE_1: Trusted Source
+
   source  = "claranet/regions/azurerm"
   version = "7.3.1"
 
@@ -48,9 +51,12 @@ resource "azurerm_key_vault_secret" "agents_admin_password" {
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
+
   #checkov:skip=CKV_AZURE_49: SSH key authentication not required
   #checkov:skip=CKV_AZURE_97: Encryption at host not required
   #checkov:skip=CKV_AZURE_149: Password authentication required
+  #checkov:skip=CKV_AZURE_178: No need for encryption at host
+
   for_each = local.agent_pools
 
   name                = each.value["name"]
@@ -129,6 +135,13 @@ resource "azurerm_subnet" "packer_main_subnet" {
   resource_group_name  = data.azurerm_resource_group.template_rg.name
   virtual_network_name = azurerm_virtual_network.packer.name
   address_prefixes     = [var.vnet_packer.packer_subnet]
+}
+
+resource "azurerm_subnet" "template_bastion_subnet" {
+  name                 = "AzureBastionSubnet"
+  resource_group_name  = data.azurerm_resource_group.template_rg.name
+  virtual_network_name = azurerm_virtual_network.packer.name
+  address_prefixes     = [var.vnet_packer.bastion_subnet]
 }
 
 resource "azurerm_virtual_network_peering" "packer_to_template" {
