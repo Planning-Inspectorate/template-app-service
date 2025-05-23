@@ -1,6 +1,6 @@
 module "primary_region" {
 
-#checkov:skip=CKV_AZURE_1: Trusted Source
+  #checkov:skip=CKV_AZURE_1: Trusted Source
 
   source  = "claranet/regions/azurerm"
   version = "7.3.1"
