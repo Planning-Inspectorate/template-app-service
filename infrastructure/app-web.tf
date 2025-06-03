@@ -40,10 +40,11 @@ module "template_app_web" {
     auth_enabled           = var.auth_config.auth_enabled
     require_authentication = var.auth_config.require_authentication
     auth_client_id         = var.auth_config.auth_client_id
-    auth_provider_secret   = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
-    auth_tenant_endpoint   = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
-    allowed_applications   = var.auth_config.allowed_applications
-    allowed_audiences      = var.auth_config.allowed_audiences
+    #checkov:skip=CKV_SECRET_6: "Base64 High Entropy String"
+    auth_provider_secret = "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+    auth_tenant_endpoint = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
+    allowed_applications = var.auth_config.allowed_applications
+    allowed_audiences    = var.auth_config.allowed_audiences
   }
 
   app_settings = {

@@ -2,6 +2,7 @@ resource "azurerm_mssql_server" "primary" {
   #checkov:skip=CKV_AZURE_113: Public access enabled for testing
   #checkov:skip=CKV_AZURE_23: Auditing to be added later
   #checkov:skip=CKV_AZURE_24: Auditing to be added later
+  #checkov:skip=CKV2_AZURE_2: "Ensure that Vulnerability Assessment (VA) is enabled on a SQL server by setting a Storage Account"
   name                          = "${local.org}-sql-${local.service_name}-primary-${var.environment}"
   resource_group_name           = azurerm_resource_group.primary.name
   location                      = module.primary_region.location
@@ -46,6 +47,7 @@ resource "azurerm_private_endpoint" "sql_primary" {
 
 resource "azurerm_mssql_database" "primary" {
   #checkov:skip=CKV_AZURE_224: TODO: Ensure that the Ledger feature is enabled on database that requires cryptographic proof and nonrepudiation of data integrity
+  #checkov:skip=CKV_AZURE_229: TODO: "Ensure the Azure SQL Database Namespace is zone redundant"
   name        = "${local.org}-sqldb-${local.resource_suffix}"
   server_id   = azurerm_mssql_server.primary.id
   collation   = "SQL_Latin1_General_CP1_CI_AS"
