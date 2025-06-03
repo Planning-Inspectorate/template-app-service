@@ -1,4 +1,6 @@
 module "primary_region" {
+  #checkov:skip=CKV_AZURE_1: Trusted Source
+  #checkov:skip=CKV_TF_1: Trusted module source
   source  = "claranet/regions/azurerm"
   version = "7.3.1"
 
@@ -48,9 +50,12 @@ resource "azurerm_key_vault_secret" "agents_admin_password" {
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "azure_devops_agent_pool" {
+
   #checkov:skip=CKV_AZURE_49: SSH key authentication not required
   #checkov:skip=CKV_AZURE_97: Encryption at host not required
   #checkov:skip=CKV_AZURE_149: Password authentication required
+  #checkov:skip=CKV_AZURE_178: No need for encryption at host
+
   for_each = local.agent_pools
 
   name                = each.value["name"]

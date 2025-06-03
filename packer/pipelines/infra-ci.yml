@@ -1,10 +1,8 @@
-pool:
-  vmImage: ubuntu-latest
-
 trigger:
   branches:
     include:
-      - packer
+      - main
+      - gh-readonly-queue/*
     exclude:
       - app
       - infrastructure
@@ -25,11 +23,13 @@ resources:
       type: github
       endpoint: Planning-Inspectorate
       name: Planning-Inspectorate/common-pipeline-templates
-      ref: refs/tags/release/3.1.0
+      ref: refs/heads/main
 
 extends:
   template: stages/wrapper_ci.yml@templates
   parameters:
+    pool:
+      name: pins-template-test
     validateName: Validate Terraform
     validationSteps:
       - template: steps/terraform_format.yml@templates

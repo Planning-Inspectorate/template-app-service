@@ -12,7 +12,7 @@ trigger: none
 pr: none
 
 pool:
-  name: pins-template-test
+  vmImage: ubuntu-latest
 
 resources:
   pipelines:

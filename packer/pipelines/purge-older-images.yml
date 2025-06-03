@@ -3,7 +3,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: ubuntu-latest
+  name: pins-template-test
 
 variables:
   azureServiceConnection: Azure DevOps Pipelines - DevOps Template - Infrastructure DEV
