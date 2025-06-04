@@ -3,7 +3,7 @@ data "azurerm_resource_group" "template_rg" {
 }
 
 data "azurerm_image" "packer_images" {
-  name_regex          = "agent-"
+  name_regex          = "image"
   resource_group_name = "pins-rg-template-dev"
   sort_descending     = true
 }
