@@ -12,7 +12,8 @@ source "azure-arm" "azure-agents" {
     Project          = "template"
     CreatedBy        = "packer"
     NodeVersion      = "22.14.0"
-    TerraformVersion = "1.11.4"
+    TerraformVersion = "1.10.5"
+    OperatingSystem  = "ubuntu-22_04-lts"
   }
 
   client_id       = var.client_id
@@ -26,7 +27,7 @@ build {
 
   source "source.azure-arm.azure-agents" {
     managed_image_resource_group_name = var.template_resource_group_name
-    managed_image_name                = "agent-ubuntu22-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+    managed_image_name                = "image-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
 
     os_type         = "Linux"
     image_publisher = "canonical"

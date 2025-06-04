@@ -46,8 +46,6 @@ sudo apt-get install -y --no-install-recommends \
   python3-distutils \
   python3-pip
 
-pip3 install urllib3
-
 # Docker Engine
 sudo apt-get install -y docker.io
 
@@ -61,13 +59,10 @@ sudo systemctl enable containerd.service
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# PowerShell
-sudo snap install powershell --classic
-
-# Terraform 1.11.4
+# Terraform 1.10.5
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get install -y terraform=1.11.4-1  # hyphen needed for repo
+sudo apt-get install -y terraform=1.10.5-1 # the hyphen is needed for the repo
 
 # Terragrunt 0.55.1
 sudo curl -s -L "https://github.com/gruntwork-io/terragrunt/releases/download/v0.55.1/terragrunt_linux_amd64" -o /usr/bin/terragrunt && chmod 777 /usr/bin/terragrunt
@@ -79,7 +74,7 @@ python3 -m pip install -U checkov==3.2.405
 # TFLint
 curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
-# NVM Setup
+# NVM
 sudo mkdir /usr/local/nvm && chmod -R 777 /usr/local/nvm
 sudo curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | NVM_DIR=/usr/local/nvm bash
 
@@ -93,7 +88,7 @@ export NVM_DIR="/usr/local/nvm"
 export PATH="$PATH:$NVM_DIR"
 EOT
 
-# Install Node Versions
+# Node versions
 nvm install 22
 nvm install 20
 nvm install 18
@@ -108,7 +103,6 @@ nvm use default
 curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 sudo apt-get update; \
-  sudo apt-get install -y apt-transport-https && \
-  sudo apt-get update &&
+sudo apt-get install -y apt-transport-https
 
 /usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync
